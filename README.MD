@@ -91,7 +91,7 @@ npx hardhat test
 
 These contracts handle real money. Test thoroughly, get audits, use multisigs.
 
-# These contract were developed to be used mainly with Ethena's USDe and Ethereal.trade's Eusde but are open to exploring all other options this could be useful for!
+## These contract were developed to be used mainly with Ethena's USDe and Ethereal.trade's Eusde but are open to exploring all other options this could be useful for!
 
 
 ## Docs
