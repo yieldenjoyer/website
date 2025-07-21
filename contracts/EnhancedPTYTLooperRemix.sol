@@ -72,13 +72,13 @@ contract EnhancedPTYTLooperRemix is ReentrancyGuard, Ownable, Pausable {
     mapping(address => uint256) public totalProfits;
     
     address[] public activeUsers;
-    uint256 public totalValueLocked;
-    uint256 public totalPositions;
+    uint256 public totalValueLocked = 0;
+    uint256 public totalPositions = 0;
     
     // Performance tracking
-    uint256 public totalProfit;
-    uint256 public totalLoss;
-    uint256 public successfulPositions;
+    uint256 public totalProfit = 0;
+    uint256 public totalLoss = 0;
+    uint256 public successfulPositions = 0;
 
     // =============================================================
     //                        CONSTRUCTOR
@@ -189,28 +189,29 @@ contract EnhancedPTYTLooperRemix is ReentrancyGuard, Ownable, Pausable {
         
         Position storage position = positions[user];
         
-        // Calculate current position value
+        // Store position data before state changes (Checks)
+        uint256 collateralAmount = position.collateralAmount;
         uint256 currentValue = _calculatePositionValue(user);
-        uint256 profitLoss = currentValue > position.collateralAmount ? 
-            currentValue - position.collateralAmount : 0;
+        uint256 profitLoss = currentValue > collateralAmount ? 
+            currentValue - collateralAmount : 0;
         
-        // Execute position closing
-        uint256 collateralReturned = _closeLoopingPosition(user);
-        
-        // Update tracking
+        // Update state variables FIRST (Effects before Interactions)
         if (profitLoss > 0) {
             totalProfit += profitLoss;
             totalProfits[user] += profitLoss;
             successfulPositions++;
         } else {
-            totalLoss += position.collateralAmount - currentValue;
+            totalLoss += collateralAmount - currentValue;
         }
         
-        totalValueLocked -= position.collateralAmount;
+        totalValueLocked -= collateralAmount;
         
-        // Clear position
+        // Clear position state
         delete positions[user];
         _removeActiveUser(user);
+        
+        // NOW safe to make external calls (Interactions)
+        uint256 collateralReturned = _closeLoopingPositionInternal(user, collateralAmount, currentValue);
         
         emit PositionClosed(user, collateralReturned, profitLoss);
     }
@@ -290,22 +291,28 @@ contract EnhancedPTYTLooperRemix is ReentrancyGuard, Ownable, Pausable {
         }
     }
     
-    function _closeLoopingPosition(address user) internal returns (uint256) {
-        Position memory position = positions[user];
-        
+    /**
+     * @notice Internal function to close position safely after state updates
+     * @param user User address
+     * @param collateralAmount Original collateral amount
+     * @param currentValue Current position value
+     * @return Amount of collateral returned to user
+     */
+    function _closeLoopingPositionInternal(address user, uint256 collateralAmount, uint256 currentValue) internal returns (uint256) {
         // Simplified closing logic - in reality this would:
         // 1. Sell all YT tokens
         // 2. Repay all debt
         // 3. Withdraw collateral
         // 4. Return remaining collateral to user
         
-        uint256 totalValue = _calculatePositionValue(user);
+        // Use currentValue as the return amount
+        uint256 returnAmount = currentValue;
         
         // Transfer collateral back to user (handle fee-on-transfer tokens)
         IERC20 collateralToken = IERC20(config.collateralToken);
         uint256 balanceBefore = collateralToken.balanceOf(user);
         
-        collateralToken.safeTransfer(user, totalValue);
+        collateralToken.safeTransfer(user, returnAmount);
         
         // Calculate actual amount received by user (handles fee-on-transfer tokens)
         uint256 balanceAfter = collateralToken.balanceOf(user);
@@ -402,13 +409,11 @@ contract EnhancedPTYTLooperRemix is ReentrancyGuard, Ownable, Pausable {
         uint256 _totalLoss,
         uint256 _successfulPositions
     ) {
-        return (
-            totalValueLocked,
-            totalPositions,
-            totalProfit,
-            totalLoss,
-            successfulPositions
-        );
+        _totalValueLocked = totalValueLocked;
+        _totalPositions = totalPositions;
+        _totalProfit = totalProfit;
+        _totalLoss = totalLoss;
+        _successfulPositions = successfulPositions;
     }
     
     function getUserProfit(address user) external view returns (uint256) {

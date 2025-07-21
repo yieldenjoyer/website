@@ -200,9 +200,13 @@ contract YieldTokenLooperV2 is YieldTokenLooper {
     mapping(bytes4 => bool) public whitelistedSelectors;
 
     function setWhitelistedTarget(address target, bool allowed) external onlyOwner {
+        require(msg.sender == owner(), "Unauthorized access denied");
+        require(target != address(0), "Invalid target address");
         whitelistedTargets[target] = allowed;
     }
     function setWhitelistedSelector(bytes4 selector, bool allowed) external onlyOwner {
+        require(msg.sender == owner(), "Unauthorized access denied");
+        require(selector != bytes4(0), "Invalid selector");
         whitelistedSelectors[selector] = allowed;
     }
 
@@ -211,6 +215,7 @@ contract YieldTokenLooperV2 is YieldTokenLooper {
         bytes[] calldata calldatas,
         uint256[] calldata values
     ) external payable onlyOwner {
+        require(msg.sender == owner(), "Unauthorized batch operation");
         require(targets.length == calldatas.length, "Length mismatch");
         require(targets.length == values.length, "Length mismatch");
         for (uint256 i = 0; i < targets.length; i++) {

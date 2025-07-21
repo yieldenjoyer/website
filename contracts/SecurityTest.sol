@@ -209,6 +209,7 @@ contract MockSY is ERC20 {
     constructor() ERC20("Mock SY", "MSY") {}
     
     function deposit(address recipient, address /* tokenIn */, uint256 amountIn, uint256 /* minAmountOut */) external returns (uint256) {
+        require(msg.sender != address(0), "Unauthorized caller");
         require(recipient != address(0), "Invalid recipient");
         require(amountIn > 0, "Invalid amount");
         require(msg.sender != address(0), "Invalid sender");

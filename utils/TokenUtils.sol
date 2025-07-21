@@ -19,6 +19,19 @@ library TokenUtils {
      * @param amount The amount to approve
      */
     function safeApprove(IERC20 token, address spender, uint256 amount) internal {
+        // Some tokens (like USDT) require allowance to be set to 0 first
+        // if there's an existing non-zero allowance
+        uint256 currentAllowance = token.allowance(address(this), spender);
+        if (currentAllowance != 0) {
+            token.approve(spender, 0);
+        }
+        
+        // Now approve the desired amount
+        bool success = token.approve(spender, amount);
+        require(success, "Token approval failed");
+    }
+    
+    function safeApproveWithFallback(IERC20 token, address spender, uint256 amount) internal {
         // First try to approve the amount directly
         try token.approve(spender, amount) {
             return;

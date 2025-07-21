@@ -499,7 +499,7 @@ contract EnhancedPTYTLooper is ReentrancyGuard, Ownable, Pausable {
     
     function _calculateLTV(address _user) internal view returns (uint256) {
         PositionInfo storage pos = userPositions[_user];
-        if (pos.totalCollateral == 0) return 0;
+        if (pos.totalCollateral <= 1) return 0; // Avoid strict equality check
         return pos.totalDebt * 10000 / pos.totalCollateral;
     }
     

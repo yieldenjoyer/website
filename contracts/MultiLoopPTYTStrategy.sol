@@ -393,7 +393,11 @@ contract MultiLoopPTYTStrategy is ReentrancyGuard, Ownable, Pausable {
         bool isPaused,
         bool isActive
     ) {
-        return (STRATEGY_OWNER, GUARDIAN, WITHDRAWAL_ADDRESS, paused(), position.isActive);
+        owner = STRATEGY_OWNER;
+        guardian = GUARDIAN;
+        withdrawalAddr = WITHDRAWAL_ADDRESS;
+        isPaused = paused();
+        isActive = position.isActive;
     }
     
     // =============================================================

@@ -212,14 +212,27 @@ contract UltraFastYieldLooper {
      * @dev Ultra-fast mint with minimal gas
      */
     function _ultraFastMint(uint256 amount) internal returns (uint256, uint256) {
-        // Simplified mint call (implement actual Pendle integration)
-        bytes memory data = abi.encodeWithSelector(
-            bytes4(keccak256("mintPyFromToken(address,address,uint256,uint256,tuple)")),
-            msg.sender,
-            address(0), // market
-            0,          // minPtOut
-            0,          // minYtOut
-            amount      // simplified input
+        // Type-safe encoding using abi.encodeCall for better security
+        bytes memory data = abi.encodeCall(
+            IPendleRouter.mintPyFromToken,
+            (
+                msg.sender,
+                address(0), // market
+                0,          // minPtOut
+                0,          // minYtOut
+                TokenInput({
+                    tokenIn: address(USDE),
+                    netTokenIn: amount,
+                    tokenMintSy: address(USDE),
+                    pendleSwap: address(0),
+                    swapData: SwapData({
+                        swapType: SwapType.NONE,
+                        extRouter: address(0),
+                        extCalldata: "",
+                        needScale: false
+                    })
+                })
+            )
         );
         
         (bool success, bytes memory result) = PENDLE_ROUTER.call(data);
@@ -284,14 +297,27 @@ contract UltraFastYieldLooper {
      * @dev Ultra-fast redeem
      */
     function _ultraFastRedeem(uint256 amount) internal returns (uint256) {
-        // Simplified redeem call
-        bytes memory data = abi.encodeWithSelector(
-            bytes4(keccak256("redeemPyToToken(address,address,uint256,uint256,tuple)")),
-            msg.sender,
-            address(0), // market
-            amount,     // ptAmount
-            amount,     // ytAmount
-            0           // simplified output
+        // Type-safe redeem call using abi.encodeCall
+        bytes memory data = abi.encodeCall(
+            IPendleRouter.redeemPyToToken,
+            (
+                msg.sender,
+                address(0), // market
+                amount,     // ptAmount
+                amount,     // ytAmount
+                TokenOutput({
+                    tokenOut: address(USDE),
+                    minTokenOut: 0,
+                    tokenRedeemSy: address(USDE),
+                    pendleSwap: address(0),
+                    swapData: SwapData({
+                        swapType: SwapType.NONE,
+                        extRouter: address(0),
+                        extCalldata: "",
+                        needScale: false
+                    })
+                })
+            )
         );
         
         (bool success, bytes memory result) = PENDLE_ROUTER.call(data);
@@ -322,13 +348,13 @@ contract UltraFastYieldLooper {
         bytes memory data;
         
         if (operation == 0) { // supply
-            data = abi.encodeWithSelector(0x617ba037, PT_TOKEN, amount, address(this), 0);
+            data = abi.encodeCall(IAavePool.supply, (PT_TOKEN, amount, address(this), 0));
         } else if (operation == 1) { // borrow
-            data = abi.encodeWithSelector(0xa415bcad, address(USDE), amount, 2, 0, address(this));
+            data = abi.encodeCall(IAavePool.borrow, (address(USDE), amount, 2, 0, address(this)));
         } else if (operation == 2) { // withdraw
-            data = abi.encodeWithSelector(0x69328dec, PT_TOKEN, amount, address(this));
+            data = abi.encodeCall(IAavePool.withdraw, (PT_TOKEN, amount, address(this)));
         } else if (operation == 3) { // repay
-            data = abi.encodeWithSelector(0x573ade81, address(USDE), amount, 2, address(this));
+            data = abi.encodeCall(IAavePool.repay, (address(USDE), amount, 2, address(this)));
         }
         
         (bool success, bytes memory result) = AAVE.call(data);
@@ -341,13 +367,13 @@ contract UltraFastYieldLooper {
         bytes memory data;
         
         if (operation == 0) { // deposit
-            data = abi.encodeWithSelector(0x47e7ef24, 0, amount);
+            data = abi.encodeCall(IEulerVault.deposit, (0, amount));
         } else if (operation == 1) { // borrow
-            data = abi.encodeWithSelector(0x4b8a3529, 0, amount);
+            data = abi.encodeCall(IEulerVault.borrow, (0, amount));
         } else if (operation == 2) { // withdraw
-            data = abi.encodeWithSelector(0x441a3e70, 0, amount);
+            data = abi.encodeCall(IEulerVault.withdraw, (0, amount));
         } else if (operation == 3) { // repay
-            data = abi.encodeWithSelector(0x371fd8e6, 0, amount);
+            data = abi.encodeCall(IEulerVault.repay, (0, amount));
         }
         
         (bool success, bytes memory result) = EULER.call(data);
@@ -485,6 +511,65 @@ contract UltraFastYieldLooper {
             USDE.safeTransfer(msg.sender, balance);
         }
     }
+}
+
+// ============ Interface Definitions for Type-Safe Encoding ============
+
+interface IPendleRouter {
+    struct TokenInput {
+        address tokenIn;
+        uint256 netTokenIn;
+        address tokenMintSy;
+        address pendleSwap;
+        SwapData swapData;
+    }
+    
+    struct SwapData {
+        SwapType swapType;
+        address extRouter;
+        bytes extCalldata;
+        bool needScale;
+    }
+    
+    enum SwapType { NONE, KYBERSWAP, ONE_INCH, ETH_WETH }
+    
+    function mintPyFromToken(
+        address receiver,
+        address market,
+        uint256 minPtOut,
+        uint256 minYtOut,
+        TokenInput calldata input
+    ) external returns (uint256 netPtOut, uint256 netYtOut);
+    
+    function redeemPyToToken(
+        address receiver,
+        address market,
+        uint256 netPtIn,
+        uint256 netYtIn,
+        TokenOutput calldata output
+    ) external returns (uint256 netTokenOut);
+    
+    struct TokenOutput {
+        address tokenOut;
+        uint256 minTokenOut;
+        address tokenRedeemSy;
+        address pendleSwap;
+        SwapData swapData;
+    }
+}
+
+interface IAavePool {
+    function supply(address asset, uint256 amount, address onBehalfOf, uint16 referralCode) external;
+    function borrow(address asset, uint256 amount, uint256 interestRateMode, uint16 referralCode, address onBehalfOf) external;
+    function withdraw(address asset, uint256 amount, address to) external returns (uint256);
+    function repay(address asset, uint256 amount, uint256 interestRateMode, address onBehalfOf) external returns (uint256);
+}
+
+interface IEulerVault {
+    function deposit(uint256 subAccountId, uint256 amount) external;
+    function withdraw(uint256 subAccountId, uint256 amount) external;
+    function borrow(uint256 subAccountId, uint256 amount) external;
+    function repay(uint256 subAccountId, uint256 amount) external;
 }
 
 interface IMorpho {
