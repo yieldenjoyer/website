@@ -94,6 +94,27 @@ These contracts handle real money. Test thoroughly, get audits, use multisigs.
 
 See [CONTENTS.md](./CONTENTS.md) for detailed info.
 
+
+## Development Notes
+Some parts of this project were developed with AI assistance for rapid prototyping and optimization. All contracts require thorough testing and security review before mainnet deployment.
+
+
+
 ## Contributing
 
-Include tests, follow patterns, document changes.
+Contributions welcome! Areas needing help:
+- [ ] Security audits and testing
+- [ ] Gas optimization 
+- [ ] Additional protocol integrations
+- [ ] Documentation improvements
+
+### How to Contribute
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/your-feature`)
+3. Test thoroughly on testnets
+4. Submit pull request with detailed description
+
+Feel free to open issues for bugs, feature requests, or questions!
+
+## License
+MIT - see LICENSE file for details
