@@ -20,6 +20,7 @@ This repo has 43 Solidity contracts for:
 - Multi-protocol DeFi integrations (Aave, Morpho, Ethena, Chainlink)
 - Gas optimized implementations
 - Security features and reentrancy protection
+- Created to take a flashloan, mint PY (PT+YT) coins on pendle, send the PT to aave, euler or morpho, take a loan, loop it multiple times up to max LTV/Etc in one TX.
 
 ## Main Contracts
 
@@ -30,11 +31,11 @@ This repo has 43 Solidity contracts for:
 - `UltraFastYieldLooper.sol` - Fast looper (18KB)
 
 ### Ethena Integration
-- `SimpleEUSDELooper.sol` - eUSDe looping (11KB)
-- `DeployableEUSDELooper.sol` - Lightweight version (4KB)
+- `SimpleEUSDELooper.sol` - eUSDe looping 
+- `DeployableEUSDELooper.sol` - Lightweight version 
 
 ### Other
-- `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation (35KB)
+- `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation 
 - `YieldTokenLooper.sol` & `YieldTokenLooperV2.sol` - YT loopers
 
 ## Features
@@ -46,10 +47,10 @@ This repo has 43 Solidity contracts for:
 
 ## Protocol Integrations
 
-- **Pendle**: Router V4, Market, PT/YT tokens
+- **Pendle**: Router V4, Market, PT/YT/SY tokens
 - **Aave V3**: Pool and aToken interactions  
-- **Morpho**: Lending protocol callbacks
-- **Ethena**: sUSDe and staking rewards
+- **Morpho**: Lending protocol callbacks and flashloans
+- **Ethena**: USDe, Eusde, Susde
 - **Chainlink**: Price feeds and oracles
 
 ## Usage
@@ -89,6 +90,9 @@ npx hardhat test
 ## Security Warning
 
 These contracts handle real money. Test thoroughly, get audits, use multisigs.
+
+# These contract were developed to be used mainly with Ethena's USDe and Ethereal.trade's Eusde but are open to exploring all other options this could be useful for!
+
 
 ## Docs
 
