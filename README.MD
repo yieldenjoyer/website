@@ -1,173 +1,99 @@
-# Pendle PT/YT Contracts Repository
+# Pendle PT/YT Contracts 
 
-A comprehensive collection of smart contracts for Pendle Protocol Principal Token (PT) and Yield Token (YT) looping strategies, with complete interfaces and utility contracts for DeFi yield optimization.
+Collection of smart contracts for Pendle Protocol Principal Token (PT) and Yield Token (YT) looping strategies.
 
-## 🏗️ Repository Structure
+## Structure
 
 ```
-pendle-pt-yt-contracts/
-├── contracts/          # Main smart contract implementations
-├── interfaces/         # Protocol interfaces and external contract ABIs
-├── utils/             # Utility contracts and libraries  
-├── security/          # Security-related contracts
-├── CONTENTS.md        # Detailed repository contents guide
-└── README.MD          # This documentation
+├── contracts/          # Main contract implementations
+├── interfaces/         # Protocol interfaces 
+├── utils/             # Utility contracts
+├── security/          # Security contracts
+└── CONTENTS.md        # Contents guide
 ```
 
-## 📋 Quick Overview
+## Overview
 
-This repository contains **43 production-ready Solidity contracts** focused on:
+This repo has 43 Solidity contracts for:
 
-- **Pendle Protocol Integration**: PT/YT looping strategies and yield optimization
-- **Multi-Protocol DeFi**: Aave, Morpho, Ethena, and Chainlink integrations  
-- **Gas Optimization**: Efficient contracts with minimal overhead
-- **Security First**: Comprehensive reentrancy protection and safety measures
+- Pendle Protocol PT/YT looping 
+- Multi-protocol DeFi integrations (Aave, Morpho, Ethena, Chainlink)
+- Gas optimized implementations
+- Security features and reentrancy protection
 
-## 🔥 Core Contracts
+## Main Contracts
 
-### Primary Looping Strategies
-- **`SimplePTYTLooper.sol`** - Basic PT/YT looping implementation (57KB)
-- **`EnhancedPTYTLooper.sol`** - Advanced looping with enhanced features (26KB)
-- **`MultiAssetYieldLooper.sol`** - Multi-asset yield optimization (23KB)
-- **`UltraFastYieldLooper.sol`** - High-performance minimal overhead looper (18KB)
+### Looping Strategies
+- `SimplePTYTLooper.sol` - Basic PT/YT looping (57KB)
+- `EnhancedPTYTLooper.sol` - Advanced looping (26KB) 
+- `MultiAssetYieldLooper.sol` - Multi-asset yield optimization (23KB)
+- `UltraFastYieldLooper.sol` - Fast looper (18KB)
 
-### Ethena eUSDe Integration
-- **`SimpleEUSDELooper.sol`** - Ethena eUSDe looping strategies (11KB)
-- **`DeployableEUSDELooper.sol`** - Lightweight deployable version (4KB)
+### Ethena Integration
+- `SimpleEUSDELooper.sol` - eUSDe looping (11KB)
+- `DeployableEUSDELooper.sol` - Lightweight version (4KB)
 
-### Advanced Strategies
-- **`MULTI-LOOP-PTYT-STRATEGY.sol`** - Comprehensive multi-loop implementation (35KB)
-- **`YieldTokenLooper.sol`** & **`YieldTokenLooperV2.sol`** - Specialized YT loopers
+### Other
+- `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation (35KB)
+- `YieldTokenLooper.sol` & `YieldTokenLooperV2.sol` - YT loopers
 
-## 🔧 Key Features
+## Features
 
-### ⚡ Performance Optimized
-- Efficient storage patterns and function calls
-- Reduced external calls and gas overhead
-- Batch operations support for multiple actions
+- Gas optimized storage and function calls
+- Reentrancy protection via `ReentrancyGuard.sol`
+- Input validation and bounds checking
+- Safe arithmetic and access controls
 
-### 🛡️ Security Hardened
-- Comprehensive reentrancy protection via `ReentrancyGuard.sol`
-- Input validation and bounds checking on all functions
-- Safe arithmetic operations and overflow protection
-- Access control mechanisms and proper authorization
+## Protocol Integrations
 
-### 🔄 Protocol Integration
-- **Pendle Protocol**: Full Router V4, Market, PT/YT token support
-- **Aave V3**: Pool interactions and aToken integrations
-- **Morpho**: Advanced lending protocol callbacks
-- **Ethena**: sUSDe and staking rewards integration
-- **Chainlink**: Price feed and oracle integrations
+- **Pendle**: Router V4, Market, PT/YT tokens
+- **Aave V3**: Pool and aToken interactions  
+- **Morpho**: Lending protocol callbacks
+- **Ethena**: sUSDe and staking rewards
+- **Chainlink**: Price feeds and oracles
 
-## 🚀 Usage Examples
+## Usage
 
-### Basic PT/YT Looping
 ```solidity
-import "./contracts/SimplePTYTLooper.sol";
-
-// Deploy and initialize looper
+// Basic PT/YT looping
 SimplePTYTLooper looper = new SimplePTYTLooper();
 looper.initialize(pendleRouter, market, principalToken);
-
-// Execute looping strategy
 looper.executeLoop(amount, loops);
 ```
 
-### Multi-Asset Strategy
-```solidity
-import "./contracts/MultiAssetYieldLooper.sol";
+## Directories
 
-MultiAssetYieldLooper strategy = new MultiAssetYieldLooper();
-strategy.addAsset(asset1, weight1);
-strategy.addAsset(asset2, weight2);
-strategy.executeStrategy();
-```
+- `/contracts` (12 files) - Main implementations
+- `/interfaces` (26 files) - Protocol interfaces for Pendle, Aave, Morpho, etc.
+- `/utils` (4 files) - `SafeERC20.sol`, `Address.sol`, `TokenUtils.sol`, `ProtocolConstants.sol`
+- `/security` (1 file) - `ReentrancyGuard.sol`
 
-## 📁 Directory Details
+## Development
 
-### `/contracts` (12 files)
-Main smart contract implementations for all looping strategies and specialized contracts.
+Requirements: Solidity ^0.8.0, Hardhat/Foundry
 
-### `/interfaces` (26 files)  
-Complete interface definitions for:
-- Pendle Protocol (Router, Market, PT/YT tokens)
-- DeFi Protocols (Aave, Morpho, Ethena)
-- Oracle Services (Chainlink, EAC)
-- Standard tokens (ERC20, ERC20Permit)
-
-### `/utils` (4 files)
-Essential utility contracts:
-- **`SafeERC20.sol`** - Safe token transfer operations
-- **`Address.sol`** - Address utility functions  
-- **`TokenUtils.sol`** - Token balance and metadata helpers
-- **`ProtocolConstants.sol`** - Network configurations and addresses
-
-### `/security` (1 file)
-- **`ReentrancyGuard.sol`** - Reentrancy attack protection for all contracts
-
-## 🛠️ Development
-
-### Prerequisites
-- Solidity ^0.8.0
-- Hardhat or Foundry for compilation
-- Node.js for development scripts
-
-### Compilation
 ```bash
-# Using Hardhat
+# Compile
 npx hardhat compile
-
-# Using Foundry  
+# or
 forge build
+
+# Test
+npx hardhat test
 ```
 
-### Testing
-```bash
-# Run security tests
-npx hardhat test --grep "Security"
+## Stats
 
-# Test specific looper
-npx hardhat test contracts/SimplePTYTLooper.sol
-```
+43 Solidity contracts, ~280KB total, 13k+ lines of code
 
-## 📊 Repository Statistics
+## Security Warning
 
-- **Total Files**: 43 Solidity contracts
-- **Total Size**: ~280KB of optimized code
-- **Security Contracts**: 1 dedicated security guard
-- **Interface Coverage**: 26 external protocol interfaces
-- **Utility Libraries**: 4 helper contracts
-- **Lines of Code**: 13,000+ lines
+These contracts handle real money. Test thoroughly, get audits, use multisigs.
 
-## ⚠️ Security Notice
+## Docs
 
-These contracts handle significant financial value and interact with multiple DeFi protocols. Always:
+See [CONTENTS.md](./CONTENTS.md) for detailed info.
 
-- ✅ Test thoroughly on testnets before mainnet deployment
-- ✅ Conduct security audits for production use
-- ✅ Use proper access controls and multisig wallets
-- ✅ Monitor positions and implement proper risk management
-- ❌ Never deploy without understanding the financial risks
+## Contributing
 
-## 📝 Documentation
-
-For detailed contract specifications and usage examples, see:
-- **[CONTENTS.md](./CONTENTS.md)** - Complete repository contents guide
-- **Contract source code** - Comprehensive inline documentation
-- **Interface files** - Full function specifications
-
-## 🤝 Contributing
-
-This repository contains production smart contracts. Any contributions should:
-1. Include comprehensive tests
-2. Follow existing code patterns
-3. Add proper documentation
-4. Consider security implications
-
-## ⚖️ License
-
-Smart contracts for educational and development purposes. Ensure compliance with applicable licenses and regulations before production deployment.
-
----
-
-**Repository**: [`github.com/liquiditymax/pendle-pt-yt-contracts`](https://github.com/liquiditymax/pendle-pt-yt-contracts)
+Include tests, follow patterns, document changes.
