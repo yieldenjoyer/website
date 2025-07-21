@@ -345,10 +345,17 @@ contract EnhancedPTYTLooper is ReentrancyGuard, Ownable, Pausable {
         // Interactions: Close all positions
         _closeAllPositions(msg.sender);
         
-        // Return collateral to user
+        // ✅ ZAN MEDIUM FIX: Implementing robust accounting mechanisms for fee-on-transfer tokens
+        // Return collateral to user with FoT token protection
         uint256 collateralBalance = IERC20(config.collateralToken).balanceOf(address(this));
         if (collateralBalance > 0) {
+            // Get balance before transfer to handle fee-on-transfer tokens
+            uint256 balanceBefore = IERC20(config.collateralToken).balanceOf(msg.sender);
             IERC20(config.collateralToken).safeTransfer(msg.sender, collateralBalance);
+            // Calculate actual amount received (handles fee-on-transfer tokens)
+            uint256 balanceAfter = IERC20(config.collateralToken).balanceOf(msg.sender);
+            uint256 actualAmountTransferred = balanceAfter - balanceBefore;
+            collateralBalance = actualAmountTransferred; // Update balance for event
         }
         
         emit PositionClosed(msg.sender, collateralBalance, profit);
