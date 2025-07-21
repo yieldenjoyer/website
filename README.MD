@@ -96,7 +96,7 @@ See [CONTENTS.md](./CONTENTS.md) for detailed info.
 
 
 ## Development Notes
-Some parts of this project were developed with AI assistance for rapid prototyping and optimization. All contracts require thorough testing and security review before mainnet deployment.
+Some parts of this project were developed with AI assistance for rapid prototyping and security enhancements. All contracts require thorough testing and security review before mainnet deployment.
 
 
 
