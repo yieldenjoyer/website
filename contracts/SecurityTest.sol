@@ -3,12 +3,13 @@ pragma solidity ^0.8.19;
 
 import "./SimplePTYTLooper.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title Security Test Contract
  * @notice Test contract to demonstrate security features of SimplePTYTLooper
  */
-contract SecurityTest {
+contract SecurityTest is ReentrancyGuard {
     SimplePTYTLooper public looper;
     MockToken public mockToken;
     address public owner;
@@ -110,14 +111,17 @@ contract SecurityTest {
     
     /**
      * @notice Test emergency pause functionality
+     * @dev Protected against reentrancy attacks with nonReentrant modifier
      */
-    function testEmergencyPause() external {
+    function testEmergencyPause() external nonReentrant {
         require(msg.sender == owner, "Only owner");
         
-        // Store initial state (Effects)
+        // Checks: Validate initial state
         bool initialPauseState = looper.paused();
         
-        // Pause the entire contract (Interactions)
+        // Effects: No state changes needed here
+        
+        // Interactions: External calls after all checks and effects
         looper.pauseStrategy();
         
         // Verify pause state changed
