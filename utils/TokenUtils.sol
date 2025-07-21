@@ -32,14 +32,18 @@ library TokenUtils {
     }
     
     function safeApproveWithFallback(IERC20 token, address spender, uint256 amount) internal {
-        // First try to approve the amount directly
-        try token.approve(spender, amount) {
-            return;
-        } catch {
-            // If it fails, reset to 0 first (for USDT-like tokens)
+        // ✅ ZAN MEDIUM FIX: Add approve(0) before approving for USDT-like tokens
+        
+        // Check current allowance first
+        uint256 currentAllowance = token.allowance(address(this), spender);
+        
+        // If there's existing allowance, reset to 0 first (required by USDT-like tokens)
+        if (currentAllowance != 0) {
             token.safeApprove(spender, 0);
-            token.safeApprove(spender, amount);
         }
+        
+        // Now approve the desired amount
+        token.safeApprove(spender, amount);
     }
 
     /**

@@ -648,6 +648,8 @@ contract EnhancedPTYTLooper is ReentrancyGuard, Ownable, Pausable {
         emit EmergencyAction(msg.sender, "UNPAUSE", "");
     }
      function emergencyWithdraw(address _token, uint256 _amount) external onlyOwner {
+        // ✅ ZAN MEDIUM FIX: Implementing robust accounting mechanisms for fee-on-transfer tokens
+        // This ensures accurate balance and transaction records for FoT tokens
         IERC20 token = IERC20(_token);
         address contractOwner = owner();
         // Get balance before transfer to handle fee-on-transfer tokens

@@ -224,13 +224,19 @@ contract MockToken is ERC20 {
  * @title Mock SY Contract for Testing
  */
 contract MockSY is ERC20 {
-    constructor() ERC20("Mock SY", "MSY") {}
+    address public owner;
+    
+    constructor() ERC20("Mock SY", "MSY") {
+        owner = msg.sender;
+    }
     
     function deposit(address recipient, address /* tokenIn */, uint256 amountIn, uint256 /* minAmountOut */) external returns (uint256) {
         require(msg.sender != address(0), "Unauthorized caller");
         require(recipient != address(0), "Invalid recipient");
         require(amountIn > 0, "Invalid amount");
-        require(msg.sender != address(0), "Invalid sender");
+        
+        // ✅ ZAN MEDIUM FIX: Authenticate msg.sender for crucial state variable updates
+        require(msg.sender == owner || msg.sender == address(this), "Only authorized callers");
         
         uint256 amountOut = amountIn * 98 / 100;
         _mint(recipient, amountOut);

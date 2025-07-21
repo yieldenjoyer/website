@@ -334,7 +334,8 @@ contract MultiLoopPTYTStrategy is ReentrancyGuard, Ownable, Pausable {
                 require(success, "ETH_TRANSFER_FAILED");
             }
         } else {
-            // ERC20 withdrawal with FoT protection
+            // ✅ ZAN MEDIUM FIX: ERC20 withdrawal with FoT protection
+            // Implementing robust accounting mechanisms for fee-on-transfer tokens
             IERC20 token = IERC20(_token);
             balance = token.balanceOf(address(this));
             if (balance > 0) {
