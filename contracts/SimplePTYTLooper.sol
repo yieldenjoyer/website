@@ -156,6 +156,12 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
         address indexed oldAddress,
         address indexed newAddress
     );
+    
+    event EmergencyAction(
+        address indexed user,
+        string action,
+        bytes data
+    );
 
     // =============================================================
     //                        STRUCTS
@@ -248,6 +254,10 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
     
     // Mutable eUSDe address (since it's not yet available)
     address public eUSDeAddress;
+    
+    // USDe and eUSDe constants
+    address private constant USDE = 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3;
+    address private constant EUSDE = address(0); // Not yet deployed - use eUSDeAddress instead
 
     // =============================================================
     //                        CONSTRUCTOR
@@ -447,17 +457,19 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
         
         Position storage position = positions[user];
         
+        // Store position data before any external calls (Checks)
+        uint256 initialValue = position.collateralAmount;
+        uint256 debtRepaid = position.borrowAmount;
+        
         // Check for liquidation first
         uint256 currentHealthFactor = _getHealthFactor(user);
         if (currentHealthFactor < config.minHealthFactor) {
-            _liquidatePosition(user);
+            _liquidatePositionInternal(user);
             return;
         }
         
         // Calculate current position value before closing
         uint256 currentValue = _calculatePositionValue(user);
-        uint256 initialValue = position.collateralAmount;
-        uint256 debtRepaid = position.borrowAmount;
         
         // Update global tracking (Effects before Interactions)
         totalValueLocked -= position.collateralAmount;
@@ -467,9 +479,9 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
         _removeActiveUser(user);
         
         // Execute position closing with complete unwinding (Interactions)
-        uint256 collateralReturned = _closeLoopingPosition(user);
+        uint256 collateralReturned = _closeLoopingPositionInternal(user, initialValue, debtRepaid);
         
-        // Calculate profit/loss and update statistics
+        // Calculate profit/loss and update statistics (Effects)
         uint256 profitLoss = 0;
         
         if (collateralReturned > initialValue) {
@@ -1018,6 +1030,118 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
         return healthFactor;
     }
     
+    function _liquidatePositionInternal(address user) internal {
+        Position storage position = positions[user];
+        
+        // Get current health factor
+        uint256 healthFactor = _getHealthFactor(user);
+        
+        // Emergency liquidation - sell all assets
+        if (position.ytAmount > 0) {
+            _sellYTTokens(position.ytAmount);
+        }
+        
+        // Attempt to repay as much debt as possible
+        uint256 borrowTokenBalance = IERC20(config.borrowToken).balanceOf(address(this));
+        if (borrowTokenBalance > 0) {
+            _repayAaveDebt(position.borrowAmount, borrowTokenBalance);
+        }
+        
+        // Withdraw remaining collateral
+        uint256 collateralWithdrawn = _withdrawCollateral(position.collateralAmount);
+        
+        // Update tracking (Effects)
+        liquidatedPositions++;
+        totalValueLocked -= position.collateralAmount;
+        
+        // Clear position (Effects)
+        delete positions[user];
+        _removeActiveUser(user);
+        
+        emit PositionLiquidated(user, healthFactor, collateralWithdrawn);
+    }
+    
+    function _closeLoopingPositionInternal(address user, uint256 initialValue, uint256 debtRepaid) internal returns (uint256) {
+        // This is the internal implementation without reentrancy protection
+        // to avoid nested reentrancy modifiers
+        
+        Position memory position = positions[user];
+        uint256 remainingDebt = position.borrowAmount;
+        uint256 collateralReturned = 0;
+        
+        // Iterative unlooping process
+        while (remainingDebt > 0) {
+            // Step 1: Withdraw PT tokens from Aave (as much as possible)
+            uint256 ptAmount = IPool(addressRegistry.aavePool).withdraw(
+                config.ptToken,
+                type(uint256).max, // Withdraw maximum available
+                address(this)
+            );
+            
+            if (ptAmount == 0) break; // No more PT to withdraw
+            
+            // Step 2: Redeem PT + YT for USDe/eUSDe (1:1 redemption)
+            IERC20(config.ptToken).forceApprove(addressRegistry.pendleRouter, ptAmount);
+            IERC20(config.ytToken).forceApprove(addressRegistry.pendleRouter, ptAmount);
+            
+            // Prepare TokenOutput for redemption
+            TokenOutput memory tokenOutput = TokenOutput({
+                tokenOut: config.borrowToken,
+                minTokenOut: 0, // No slippage for USDe redemption
+                tokenRedeemSy: config.borrowToken,
+                pendleSwap: address(0),
+                swapData: SwapData({
+                    swapType: SwapType.NONE,
+                    extRouter: address(0),
+                    extCalldata: "",
+                    needScale: false
+                })
+            });
+            
+            // Redeem PT+YT to get USDe/eUSDe
+            uint256 usdeReceived = IPendleRouter(addressRegistry.pendleRouter).redeemPyToToken(
+                address(this),
+                config.pendleMarket,
+                ptAmount, // PT amount
+                tokenOutput
+            );
+            
+            // Step 3: Repay loan with received USDe/eUSDe
+            if (usdeReceived > 0) {
+                IERC20(config.borrowToken).forceApprove(addressRegistry.aavePool, usdeReceived);
+                uint256 repaid = IPool(addressRegistry.aavePool).repay(
+                    config.borrowToken,
+                    usdeReceived,
+                    2, // Variable interest rate
+                    address(this)
+                );
+                
+                remainingDebt = remainingDebt > repaid ? remainingDebt - repaid : 0;
+            }
+            
+            // Step 4: Check if debt is fully repaid
+            (, uint256 totalDebt,,,, ) = IPool(addressRegistry.aavePool).getUserAccountData(address(this));
+            if (totalDebt == 0) {
+                remainingDebt = 0;
+                break;
+            }
+        }
+        
+        // Step 5: Withdraw remaining collateral (WETH)
+        collateralReturned = IPool(addressRegistry.aavePool).withdraw(
+            config.collateralToken,
+            type(uint256).max,
+            address(this)
+        );
+        
+        // Step 6: Transfer collateral back to user
+        if (collateralReturned > 0) {
+            IERC20(config.collateralToken).safeTransfer(user, collateralReturned);
+        }
+        
+        return collateralReturned;
+    }
+
     function _removeActiveUser(address user) internal {
         for (uint256 i = 0; i < activeUsers.length; i++) {
             if (activeUsers[i] == user) {
