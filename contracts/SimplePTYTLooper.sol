@@ -700,7 +700,7 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
         emit PositionLiquidated(user, healthFactor, collateralWithdrawn);
     }
     
-    function _depositCollateral(uint256 amount) internal nonReentrant {
+    function _depositCollateral(uint256 amount) internal {
         require(amount != 0, "Invalid deposit amount");
         
         // For USDe/eUSDe strategy, we deposit PT tokens as collateral
@@ -716,7 +716,7 @@ contract SimplePTYTLooper is ReentrancyGuard, Pausable, Ownable2Step {
         );
     }
     
-    function _borrowFromAave(uint256 amount) internal nonReentrant {
+    function _borrowFromAave(uint256 amount) internal {
         require(amount != 0, "Invalid borrow amount");
         
         // Borrow USDe/eUSDe from Aave with variable interest rate (mode 2)

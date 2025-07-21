@@ -114,18 +114,27 @@ contract SecurityTest {
     function testEmergencyPause() external {
         require(msg.sender == owner, "Only owner");
         
-        // Pause the entire contract
+        // Store initial state (Effects)
+        bool initialPauseState = looper.paused();
+        
+        // Pause the entire contract (Interactions)
         looper.pauseStrategy();
         
+        // Verify pause state changed
+        require(looper.paused(), "Contract should be paused");
+        
         // All functions should fail when paused
-        try looper.openPosition(1 ether, 0.5 ether, 3) {
+        try looper.openPosition(1 ether, 0.5 ether, 3, 0, 0) {
             revert("Should have failed - contract paused");
         } catch {
             // Expected failure
         }
         
-        // Unpause the contract
+        // Unpause the contract (Interactions)
         looper.unpauseStrategy();
+        
+        // Verify pause state restored
+        require(!looper.paused(), "Contract should be unpaused");
         
         // Functions should work again (with proper setup)
     }
@@ -178,11 +187,17 @@ contract SecurityTest {
  * @title Mock Token for Testing
  */
 contract MockToken is ERC20 {
+    address public owner;
+    
     constructor(string memory name, string memory symbol, uint8 decimals) ERC20(name, symbol) {
+        owner = msg.sender;
         _mint(msg.sender, 1000000 * 10**decimals);
     }
     
     function mint(address to, uint256 amount) external {
+        require(msg.sender == owner, "Only owner can mint");
+        require(to != address(0), "Invalid recipient");
+        require(amount > 0, "Invalid amount");
         _mint(to, amount);
     }
 }
@@ -194,13 +209,23 @@ contract MockSY is ERC20 {
     constructor() ERC20("Mock SY", "MSY") {}
     
     function deposit(address recipient, address /* tokenIn */, uint256 amountIn, uint256 /* minAmountOut */) external returns (uint256) {
-        _mint(recipient, amountIn * 98 / 100);
-        return amountIn * 98 / 100;
+        require(recipient != address(0), "Invalid recipient");
+        require(amountIn > 0, "Invalid amount");
+        require(msg.sender != address(0), "Invalid sender");
+        
+        uint256 amountOut = amountIn * 98 / 100;
+        _mint(recipient, amountOut);
+        return amountOut;
     }
     
-    function redeem(address /* recipient */, uint256 amountSyToRedeem, address /* tokenOut */, uint256 /* minAmountOut */, bool /* burnFromInternalBalance */) external returns (uint256) {
+    function redeem(address recipient, uint256 amountSyToRedeem, address /* tokenOut */, uint256 /* minAmountOut */, bool /* burnFromInternalBalance */) external returns (uint256) {
+        require(recipient != address(0), "Invalid recipient");
+        require(amountSyToRedeem > 0, "Invalid redeem amount");
+        require(balanceOf(msg.sender) >= amountSyToRedeem, "Insufficient balance");
+        
+        uint256 amountOut = amountSyToRedeem * 98 / 100;
         _burn(msg.sender, amountSyToRedeem);
-        return amountSyToRedeem * 98 / 100;
+        return amountOut;
     }
 }
 
