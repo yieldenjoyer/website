@@ -52,6 +52,8 @@ This repo has 43 Solidity contracts for:
 - **Morpho**: Lending protocol callbacks and flashloans
 - **Ethena**: USDe, Eusde, Susde
 - **Chainlink**: Price feeds and oracles
+- **Euler**: Lending PT & Looping
+
 
 ## Usage
 
