@@ -32,12 +32,12 @@ This repo has 43 Solidity contracts for:
 - `EnhancedPTYTLooper.sol` - Advanced looping (26KB) 
 - `MultiAssetYieldLooper.sol` - Multi-asset yield optimization (23KB)
 - `UltraFastYieldLooper.sol` - Fast looper (18KB)
-- `SimplePTYTLooperv2.sol` - Basic PT/YT looping (second version, incomplete, use first if compiling to create a contract).
-
 
 ### Ethena Integration
 - `SimpleEUSDELooper.sol` - eUSDe looping 
 - `DeployableEUSDELooper.sol` - Lightweight version 
+- `SimpleEUSDELooperv2.sol` - incomplete, use first(non v2) if compiling to create a contract).
+
 
 ### Other
 - `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation 
