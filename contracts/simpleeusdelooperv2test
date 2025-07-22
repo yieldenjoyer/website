@@ -1,0 +1,195 @@
+solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+// --- OpenZeppelin Imports ---
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+// --- Morpho Blue Flashloan Interface (simplified) ---
+interface IMorphoFlashloan {
+    function flashLoan(address receiver, address token, uint256 amount, bytes calldata params) external;
+}
+
+// --- Pendle V4 Router Interface (simplified) ---
+interface IPendleRouter {
+    struct SwapData {
+        uint8 swapType;
+        address extRouter;
+        bytes extCalldata;
+        bool needScale;
+    }
+    struct TokenInput {
+        address tokenIn;
+        uint256 netTokenIn;
+        address tokenMintSy;
+        address bulk;
+        address pendleSwap;
+        SwapData swapData;
+    }
+    function mintPyFromToken(
+        address receiver,
+        address market,
+        uint256 minPtOut,
+        uint256 minYtOut,
+        TokenInput calldata input
+    ) external returns (uint256 netPtOut, uint256 netYtOut);
+}
+
+// --- Euler Vault Interface (simplified) ---
+interface IEulerVault {
+    function deposit(uint256 subAccountId, uint256 amount) external;
+    function borrow(uint256 subAccountId, uint256 amount) external;
+    function balanceOf(address account) external view returns (uint256);
+    function withdraw(uint256 subAccountId, uint256 amount) external;
+}
+
+contract MorphoPendleEulerLooper is ReentrancyGuard {
+    using SafeERC20 for IERC20;
+
+    // --- Constants (set these to actual addresses on deployment) ---
+    address public constant USDE = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F; // USDe token
+    address public constant PENDLE_ROUTER = 0x888888888889758F76e7103c6CbF23ABbF58F946;
+    address public constant PENDLE_MARKET = 0x9Df192D13D61609D1852461c4850595e1F56E714;
+    address public constant PT = 0x14Bdc3A3AE09f5518b923b69489CBcAfB238e617;
+    address public constant YT = 0xe8eF806c8aaDc541408dcAd36107c7d26a391712;
+    address public constant EULER_VAULT = 0x5e761084c253743268CdbcCc433bDd33C94c82C9;
+    address public constant MORPHO_FLASHLOAN = 0xYourMorphoFlashloanAddressHere; // Set actual Morpho flashloan provider
+
+    // --- Events ---
+    event LoopExecuted(address indexed user, uint256 loops, uint256 totalPT, uint256 totalYT, uint256 totalBorrowed);
+    event FlashloanInitiated(address indexed user, uint256 amount, uint256 loops);
+
+    // --- Modifiers ---
+    modifier onlyEOA() {
+        require(msg.sender == tx.origin, "Only EOA");
+        _;
+    }
+
+    // --- Main Loop Function ---
+    /// @notice Initiates the looping process using a Morpho flashloan
+    /// @param flashloanAmount The amount of USDe to flashloan (in wei)
+    /// @param loops Number of times to loop (e.g., 3 = 3x leverage)
+    function loopWithMorphoFlashloan(uint256 flashloanAmount, uint256 loops) external nonReentrant onlyEOA {
+        require(flashloanAmount > 0, "Zero amount");
+        require(loops > 0 && loops <= 5, "Invalid loop count");
+        emit FlashloanInitiated(msg.sender, flashloanAmount, loops);
+
+        // Encode parameters for onMorphoFlashLoan callback
+        bytes memory params = abi.encode(msg.sender, flashloanAmount, loops);
+
+        // Initiate Morpho flashloan
+        IMorphoFlashloan(MORPHO_FLASHLOAN).flashLoan(
+            address(this),
+            USDE,
+            flashloanAmount,
+            params
+        );
+    }
+
+    /// @notice Morpho flashloan callback (must be called by Morpho)
+    function onMorphoFlashLoan(
+        address initiator,
+        address token,
+        uint256 amount,
+        uint256 fee,
+        bytes calldata params
+    ) external nonReentrant {
+        require(msg.sender == MORPHO_FLASHLOAN, "Only Morpho");
+        require(token == USDE, "Only USDe");
+        (address user, uint256 flashloanAmount, uint256 loops) = abi.decode(params, (address, uint256, uint256));
+        require(initiator == address(this), "Invalid initiator");
+
+        uint256 totalPT;
+        uint256 totalYT;
+        uint256 totalBorrowed;
+
+        uint256 currentAmount = flashloanAmount;
+
+        for (uint256 i = 0; i < loops; ++i) {
+            // 1. Mint PT+YT from Pendle
+            (uint256 ptMinted, uint256 ytMinted) = _mintPTYT(currentAmount);
+
+            // 2. Deposit PT as collateral to Euler
+            _approveIfNeeded(PT, EULER_VAULT, ptMinted);
+            IEulerVault(EULER_VAULT).deposit(0, ptMinted);
+
+            // 3. Borrow USDe from Euler against PT
+            // For simplicity, we borrow the same as deposited. In production, use safe collateral factors!
+            IEulerVault(EULER_VAULT).borrow(0, ptMinted);
+            uint256 usdeBorrowed = IERC20(USDE).balanceOf(address(this));
+
+            // Prepare for next loop
+            currentAmount = usdeBorrowed;
+
+            // Tally up
+            totalPT += ptMinted;
+            totalYT += ytMinted;
+            totalBorrowed += usdeBorrowed;
+        }
+
+        // Repay flashloan (+ fee)
+        uint256 repayment = flashloanAmount + fee;
+        _approveIfNeeded(USDE, MORPHO_FLASHLOAN, repayment);
+        IERC20(USDE).safeTransfer(MORPHO_FLASHLOAN, repayment);
+
+        emit LoopExecuted(user, loops, totalPT, totalYT, totalBorrowed);
+
+        // Any profit (extra USDe or YT) remains in contract for user to withdraw
+    }
+
+    // --- Internal: Mint PT+YT from Pendle ---
+    function _mintPTYT(uint256 usdeAmount) internal returns (uint256 ptMinted, uint256 ytMinted) {
+        _approveIfNeeded(USDE, PENDLE_ROUTER, usdeAmount);
+
+        IPendleRouter.TokenInput memory tokenInput = IPendleRouter.TokenInput({
+            tokenIn: USDE,
+            netTokenIn: usdeAmount,
+            tokenMintSy: USDE,
+            bulk: address(0),
+            pendleSwap: address(0),
+            swapData: IPendleRouter.SwapData({
+                swapType: 0, // NONE
+                extRouter: address(0),
+                extCalldata: "",
+                needScale: false
+            })
+        });
+
+        (ptMinted, ytMinted) = IPendleRouter(PENDLE_ROUTER).mintPyFromToken(
+            address(this),
+            PENDLE_MARKET,
+            0, // minPtOut
+            0, // minYtOut
+            tokenInput
+        );
+    }
+
+    // --- Internal: Approve If Needed (gas efficient) ---
+    function _approveIfNeeded(address token, address spender, uint256 amount) internal {
+        uint256 allowance = IERC20(token).allowance(address(this), spender);
+        if (allowance < amount) {
+            IERC20(token).safeApprove(spender, 0);
+            IERC20(token).safeApprove(spender, type(uint256).max);
+        }
+    }
+
+    // --- User Withdraw Functions ---
+    function withdrawToken(address token) external nonReentrant onlyEOA {
+        uint256 bal = IERC20(token).balanceOf(address(this));
+        require(bal > 0, "Nothing to withdraw");
+        IERC20(token).safeTransfer(msg.sender, bal);
+    }
+
+    // --- View functions ---
+    function getContractPTBalance() external view returns (uint256) {
+        return IERC20(PT).balanceOf(address(this));
+    }
+    function getContractYTBalance() external view returns (uint256) {
+        return IERC20(YT).balanceOf(address(this));
+    }
+    function getContractUSDeBalance() external view returns (uint256) {
+        return IERC20(USDE).balanceOf(address(this));
+    }
+}
