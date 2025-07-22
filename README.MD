@@ -22,7 +22,8 @@ This repo has 43 Solidity contracts for:
 - Security features and reentrancy protection
 - Created to take a flashloan, mint PY (PT+YT) coins on pendle, send the PT to aave, euler or morpho, take a loan, loop it multiple times up to max LTV/Etc in one TX.
 
-## Main Contracts
+# Purpose
+- flash loan from morpho -> pendle mint PT+YT(py token),-> aave/euler/morpho (plans to add silo), -> take max LTV on the PT, back to pendle to mint PT+YT, repeat.
 
 ### Looping Strategies
 - `SimplePTYTLooper.sol` - Basic PT/YT looping (57KB)
