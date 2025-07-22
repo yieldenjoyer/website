@@ -55,7 +55,7 @@ This repo has 43 Solidity contracts for:
 - **Chainlink**: Price feeds and oracles
 - **Euler**: Lending PT & Looping
 
-## Current config is for USDe/EusdE mainly with plans to add more coins in the future that will be loopable.
+## Current config is for Ethena's USDe and Ethereal's Eusde mainly with plans to add more coins in the future that will be loopable.
 
 
 
