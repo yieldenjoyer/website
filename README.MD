@@ -25,11 +25,15 @@ This repo has 43 Solidity contracts for:
 # Purpose
 - flash loan from morpho -> pendle mint PT+YT(py token),-> aave/euler/morpho (plans to add silo), -> take max LTV on the PT, back to pendle to mint PT+YT, repeat.
 
+# Warning - these involve highly complex smart contract interactions. Make sure to use on testnet first to verify before trying with real money. Despite having multiple audits via zan.top, there is still the possibility of a vulnerability.
+
 ### Looping Strategies
 - `SimplePTYTLooper.sol` - Basic PT/YT looping (57KB)
 - `EnhancedPTYTLooper.sol` - Advanced looping (26KB) 
 - `MultiAssetYieldLooper.sol` - Multi-asset yield optimization (23KB)
 - `UltraFastYieldLooper.sol` - Fast looper (18KB)
+- `SimplePTYTLooperv2.sol` - Basic PT/YT looping (second version, incomplete, use first if compiling to create a contract.
+
 
 ### Ethena Integration
 - `SimpleEUSDELooper.sol` - eUSDe looping 
