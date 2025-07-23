@@ -22,7 +22,10 @@ This repo has 43 Solidity contracts for:
 - Security features and reentrancy protection
 - Created to take a flashloan, mint PY (PT+YT) coins on pendle, send the PT to aave, euler or morpho, take a loan, loop it multiple times up to max LTV/Etc in one TX.
 
-## Main Contracts
+# Purpose
+- flash loan from morpho -> pendle mint PT+YT(py token),-> aave/euler/morpho (plans to add silo), -> take max LTV on the PT, back to pendle to mint PT+YT, repeat.
+
+# Warning - these involve highly complex smart contract interactions. Make sure to use on testnet first to verify before trying with real money. Despite having multiple audits via zan.top, there is still the possibility of a vulnerability.
 
 ### Looping Strategies
 - `SimplePTYTLooper.sol` - Basic PT/YT looping (57KB)
@@ -33,6 +36,8 @@ This repo has 43 Solidity contracts for:
 ### Ethena Integration
 - `SimpleEUSDELooper.sol` - eUSDe looping 
 - `DeployableEUSDELooper.sol` - Lightweight version 
+- `SimpleEUSDELooperv2.sol` - incomplete, use first(non v2) if compiling to create a contract).
+
 
 ### Other
 - `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation 
@@ -52,6 +57,11 @@ This repo has 43 Solidity contracts for:
 - **Morpho**: Lending protocol callbacks and flashloans
 - **Ethena**: USDe, Eusde, Susde
 - **Chainlink**: Price feeds and oracles
+- **Euler**: Lending PT & Looping
+
+## Current config is for Ethena's USDe and Ethereal's Eusde mainly with plans to add more coins in the future that will be loopable.
+
+
 
 ## Usage
 
