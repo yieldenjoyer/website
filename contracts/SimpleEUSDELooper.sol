@@ -7,33 +7,32 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title SimpleEUSDELooper
- * @dev 
+ * @dev A clean, readable smart contract for PT/YT yield farming with eUSDe
  * 
- * This contract is 100% isolated for PT/YT yield farming only.
- * 
+ * This contract enables users to:
+ * 1. Deposit eUSDe tokens
+ * 2. Mint PT (Principal Tokens) and YT (Yield Tokens) via Pendle
+ * 3. Deposit PT tokens to Euler for lending
+ * 4. Create leveraged yield farming positions
  */
 contract SimpleEUSDELooper is ReentrancyGuard {
     using SafeERC20 for IERC20;
     
-    // ============ eUSDe Addresses ============
+    // ============ Token Addresses (Ethereum Mainnet) ============
     
-    // ✅ eUSDe token address
-    address private constant EUSDE_BASE = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F; // eUSDe token
-    address private constant EUSDE_MARKET = 0x9Df192D13D61609D1852461c4850595e1F56E714; // eUSDe Pendle market
-    
-    // ✅ Available eUSDe addresses
+    address private constant EUSDE_BASE = 0x90D2af7d622ca3141efA4d8f1F24d86E5974Cc8F;
+    address private constant EUSDE_MARKET = 0x9Df192D13D61609D1852461c4850595e1F56E714;
     address private constant EUSDE_PT = 0x14Bdc3A3AE09f5518b923b69489CBcAfB238e617;
     address private constant EUSDE_YT = 0xe8eF806c8aaDc541408dcAd36107c7d26a391712;
     address private constant EUSDE_SY = 0x7ac8ca87959b1d5EDfe2df5325A37c304DCea4D0;
     
-    // ✅ Pendle infrastructure
-    address private constant PENDLE_ROUTER_V4 = 0x888888888889758F76e7103c6CbF23ABbF58F946;
+    // ============ Protocol Addresses ============
     
-    // ✅ Lending protocols
+    address private constant PENDLE_ROUTER_V4 = 0x888888888889758F76e7103c6CbF23ABbF58F946;
     address private constant EULER_PT_EUSDE_VAULT = 0x5e761084c253743268CdbcCc433bDd33C94c82C9;
     address private constant AAVE_V3_POOL = 0x87870bCd3e37E6c3cca04C8D0e4F82D2Bc18aa18;
     
-    // ============ State Variables ============
+    // ============ Position Tracking ============
     
     struct LoopPosition {
         uint256 initialAmount;      // Initial eUSDe deposited
@@ -70,19 +69,7 @@ contract SimpleEUSDELooper is ReentrancyGuard {
         int256 netProfit
     );
     
-    // ============ Constructor ============
-    
-    constructor() {
-        // Initialize ReentrancyGuard and set up approvals
-    }
-
     // ============ Modifiers ============
-    
-    modifier requiresAddresses() {
-        require(EUSDE_BASE != address(0), "eUSDe base address not set");
-        require(EUSDE_MARKET != address(0), "eUSDe market address not set");
-        _;
-    }
     
     modifier hasActivePosition() {
         require(positions[msg.sender].isActive, "No active position");
@@ -97,16 +84,16 @@ contract SimpleEUSDELooper is ReentrancyGuard {
     // ============ Main Functions ============
     
     /**
-     * @dev Open a simple looping position (FOR TESTING ONLY)
+     * @dev Open a simple looping position
      * @param amount Amount of eUSDe to start with
-     * @param loops Number of loops to execute
+     * @param loops Number of loops to execute (1-5)
      */
     function openSimpleLoop(
         uint256 amount,
         uint256 loops
-    ) external nonReentrant requiresAddresses noActivePosition {
-        require(amount != 0, "Amount must be > 0");
-        require(loops != 0 && loops <= 5, "Invalid loop count");
+    ) external nonReentrant noActivePosition {
+        require(amount > 0, "Amount must be greater than 0");
+        require(loops > 0 && loops <= 5, "Invalid loop count (1-5)");
         
         // Transfer eUSDe from user
         IERC20(EUSDE_BASE).safeTransferFrom(msg.sender, address(this), amount);
@@ -129,25 +116,25 @@ contract SimpleEUSDELooper is ReentrancyGuard {
         uint256 currentAmount = amount;
         for (uint256 i = 0; i < loops; i++) {
             currentAmount = executeSingleLoop(currentAmount, i + 1);
-            if (currentAmount == 0) break; // Stop if no more to loop
+            if (currentAmount == 0) break;
         }
     }
     
     /**
-     * @dev Open position for Gnosis Safe batch compatibility
-     * @param amount Amount of eUSDe to use (in wei)
+     * @dev Open position with leverage parameter (Gnosis Safe compatible)
+     * @param amount Amount of eUSDe to use
+     * @param protocol Unused parameter for batch compatibility
      * @param leverage Leverage amount (200 = 2x, 300 = 3x, etc.)
-     * Note: protocol parameter is unused but kept for batch compatibility
      */
     function openPosition(
         uint256 amount,
-        uint8 /* protocol */,
+        uint8 protocol,
         uint256 leverage
-    ) external nonReentrant requiresAddresses noActivePosition {
-        require(amount != 0, "Amount must be > 0");
+    ) external nonReentrant noActivePosition {
+        require(amount > 0, "Amount must be greater than 0");
         require(leverage >= 100 && leverage <= 500, "Invalid leverage (100-500)");
         
-        // Convert leverage to loop count (200 = 2 loops, 300 = 3 loops)
+        // Convert leverage to loop count
         uint256 loops = leverage / 100;
         
         // Transfer eUSDe from user
@@ -171,7 +158,7 @@ contract SimpleEUSDELooper is ReentrancyGuard {
         uint256 currentAmount = amount;
         for (uint256 i = 0; i < loops; i++) {
             currentAmount = executeSingleLoop(currentAmount, i + 1);
-            if (currentAmount == 0) break; // Stop if no more to loop
+            if (currentAmount == 0) break;
         }
     }
     
@@ -184,13 +171,13 @@ contract SimpleEUSDELooper is ReentrancyGuard {
     ) internal returns (uint256 nextAmount) {
         LoopPosition storage pos = positions[msg.sender];
         
-        // 1. Mint PT + YT from eUSDe
+        // 1. Mint PT + YT from eUSDe using Pendle
         (uint256 ptMinted, uint256 ytMinted) = mintPTYTFromEUSDe(eusdeAmount);
         
-        // 2. Deposit PT to Euler
+        // 2. Deposit PT to Euler vault
         uint256 ptDeposited = depositPTToEuler(ptMinted);
         
-        // 3. Update position
+        // 3. Update position tracking
         pos.totalPTMinted += ptMinted;
         pos.totalYTMinted += ytMinted;
         pos.totalPTDeposited += ptDeposited;
@@ -198,18 +185,18 @@ contract SimpleEUSDELooper is ReentrancyGuard {
         
         emit LoopExecuted(msg.sender, loopNumber, ptMinted, ytMinted, ptDeposited);
         
-        // For now, return 0 to stop looping (will add borrowing later)
+        // Return 0 to stop looping (borrowing logic to be added later)
         return 0;
     }
     
     /**
-     * @dev Mint PT + YT from eUSDe using Pendle
+     * @dev Mint PT + YT from eUSDe using Pendle Protocol
      */
     function mintPTYTFromEUSDe(uint256 eusdeAmount) internal returns (uint256 ptMinted, uint256 ytMinted) {
-        // Approve eUSDe for Pendle Router using SafeERC20
+        // Approve eUSDe for Pendle Router
         IERC20(EUSDE_BASE).safeApprove(PENDLE_ROUTER_V4, eusdeAmount);
         
-        // Prepare token input
+        // Prepare token input for Pendle
         IPendleRouter.TokenInput memory tokenInput = IPendleRouter.TokenInput({
             tokenIn: EUSDE_BASE,
             netTokenIn: eusdeAmount,
@@ -224,38 +211,41 @@ contract SimpleEUSDELooper is ReentrancyGuard {
             })
         });
         
-        // Execute mint
+        // Execute PT/YT minting
         (ptMinted, ytMinted) = IPendleRouter(PENDLE_ROUTER_V4).mintPyFromToken(
-            address(this),
-            EUSDE_MARKET,
-            0, // minPtOut
-            0, // minYtOut
-            tokenInput
+            address(this),  // receiver
+            EUSDE_MARKET,   // market
+            0,              // minPtOut
+            0,              // minYtOut
+            tokenInput      // input
         );
     }
     
     /**
-     * @dev Deposit PT to Euler vault
+     * @dev Deposit PT tokens to Euler vault
      */
     function depositPTToEuler(uint256 ptAmount) internal returns (uint256 deposited) {
-        // Approve PT for Euler using SafeERC20
+        // Approve PT for Euler vault
         IERC20(EUSDE_PT).safeApprove(EULER_PT_EUSDE_VAULT, ptAmount);
         
-        // Deposit to Euler
+        // Deposit to Euler vault
         IEuler(EULER_PT_EUSDE_VAULT).deposit(0, ptAmount);
         
         return ptAmount;
     }
     
     /**
-     * @dev Close position and return funds
+     * @dev Close position and return funds to user
      */
     function closePosition() external nonReentrant hasActivePosition {
-        // For now, just clear the position
-        // TODO: Add full unwinding logic
+        // TODO: Implement full unwinding logic
+        // 1. Withdraw PT from Euler
+        // 2. Redeem PT + YT back to eUSDe
+        // 3. Repay any borrowed funds
+        // 4. Return remaining eUSDe to user
         
-        uint256 finalAmount = 0; // Will calculate after unwinding
-        int256 netProfit = 0;    // Will calculate profit/loss
+        uint256 finalAmount = 0;
+        int256 netProfit = 0;
         
         // Clear position
         delete positions[msg.sender];
@@ -265,20 +255,22 @@ contract SimpleEUSDELooper is ReentrancyGuard {
     
     // ============ View Functions ============
     
+    function getPosition(address user) external view returns (LoopPosition memory) {
+        return positions[user];
+    }
+    
     function isReady() external pure returns (bool) {
-        return true; // All addresses are now set
+        return true;
     }
     
     function getMissingAddresses() external pure returns (string[] memory) {
-        string[] memory result = new string[](0); // No missing addresses
+        string[] memory result = new string[](0);
         return result;
     }
     
     // ============ Emergency Functions ============
     
-    function emergencyWithdraw(address token) external {
-        require(positions[msg.sender].isActive, "No active position");
-        
+    function emergencyWithdraw(address token) external hasActivePosition {
         uint256 balance = IERC20(token).balanceOf(address(this));
         if (balance > 0) {
             IERC20(token).safeTransfer(msg.sender, balance);
@@ -286,7 +278,7 @@ contract SimpleEUSDELooper is ReentrancyGuard {
     }
 }
 
-// ============ Interfaces ============
+// ============ External Interfaces ============
 
 interface IPendleRouter {
     enum SwapType { NONE, KYBERSWAP, ONE_INCH, ETH_WETH }
