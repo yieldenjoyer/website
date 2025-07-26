@@ -1,162 +1,143 @@
-# PolyBets Browser Application
+# Matrix Finance - DeFi Yield Optimization Platform
 
-Enhanced React-based frontend application with 3D visualizations and modern UI components for the PolyBets DeFi platform.
+A modern React application for DeFi yield optimization with a Matrix-themed interface.
 
-## Features
+## 🚀 Quick Start
 
-This browser application includes advanced features built on top of the basic website:
+The application is currently running at: **http://localhost:3001/**
 
-- **3D Visualizations**: Interactive Three.js components for immersive data visualization
-- **Matrix Theme**: Professional dark interface with green accent colors
-- **Real-time Data**: Live market data streams and yield information updates
-- **Audio Feedback**: Optional sound effects for user interactions
-- **TypeScript**: Full type safety throughout the application
-- **Modern React**: Latest React patterns with functional components and hooks
+### For macOS Users - Step by Step Setup
 
-## Key Components
+If the terminal command isn't working, follow these steps:
 
-### 3D Components
-- `CryptoBackground.tsx` - Animated particle background
-- `Dashboard3D.tsx` - Interactive 3D dashboard charts
-- `HeroScene3D.tsx` - Dynamic hero section animations
-- `NetworkVisualization.tsx` - Real-time network topology
-- `MatrixFinanceLogo.tsx` - Animated 3D logo
+1. **Check if Node.js is installed:**
+```bash
+node --version
+npm --version
+```
+If not installed, download from [nodejs.org](https://nodejs.org/)
 
-### UI Components
-- `RealTimeDataStream.tsx` - Live streaming market data
-- `KeyMetrics.tsx` - Important metrics dashboard
-- `ThemeControls.tsx` - Theme customization interface
-- `LoadingSpinner.tsx` - Loading state indicators
+2. **Navigate to the correct directory:**
+```bash
+# Navigate to the browser folder
+cd /Users/$(whoami)/Desktop/polybets-monorepo/.github/browser
 
-### Audio System
-- `MatrixSoundSystem.tsx` - Audio feedback for interactions
+# Verify you're in the right place - you should see package.json
+ls -la
+```
+
+3. **You're already in the right directory!** 
+Notice your terminal prompt shows `browser %` - this means you're already in the browser folder. **Don't run `cd .github/browser` again.**
+
+4. **Install dependencies (if needed):**
+```bash
+npm install
+```
+
+5. **Start the development server:**
+```bash
+npm run dev
+```
+
+**Since you're already in the browser directory, just run:**
+```bash
+npm run dev
+```
+
+### Alternative Access Methods
+
+**The app is already running!** You can access it directly:
+
+1. **Direct Browser Access**: Open http://localhost:3001/ in your browser
+2. **macOS Open Command**: `open http://localhost:3001/`
+3. **VSCode Terminal**: The app is currently running in VSCode's integrated terminal
+
+### Troubleshooting for macOS
+
+If you get "command not found" errors:
+
+```bash
+# Check if you're in the right directory
+ls -la
+# You should see: package.json, src/, index.html
+
+# If npm command fails, try:
+which npm
+# If nothing appears, Node.js isn't installed
+
+# If permission errors:
+sudo npm install -g npm
+```
+
+## 📱 Application Features
 
 ### Pages
-- `HomePage.tsx` - Landing page with 3D hero section
-- `DashboardPage.tsx` - Advanced analytics with 3D charts
-- `VaultsPage.tsx` - Vault management interface
-- `FAQPage.tsx` - FAQ with search functionality
-- `LoginPage.tsx` - Authentication interface
+- **Home** - Hero section with Matrix theme and feature highlights
+- **Dashboard** - Portfolio overview with stats and recent activity
+- **Vaults** - Yield vault listings with APY rates and risk indicators
+- **FAQ** - Interactive FAQ with DeFi information
+- **Login** - Wallet connection interface
 
-## Development Setup
+### Navigation
+- Click the "MATRIX FINANCE" logo to return to home
+- Use navigation buttons to switch between pages
+- All pages are interconnected with proper state management
 
-1. Navigate to the browser directory:
-   ```bash
-   cd .github/browser
-   ```
+## 🎨 Design Features
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+- **Matrix/Cyberpunk Theme** - Green matrix colors with futuristic styling
+- **Responsive Design** - Works on desktop, tablet, and mobile
+- **Interactive Elements** - Hover effects and smooth animations
+- **Professional Layout** - Clean, modern DeFi platform interface
 
-3. Start development server:
-   ```bash
-   npm run dev
-   ```
+## 🛠 Technical Stack
 
-4. Build for production:
-   ```bash
-   npm run build
-   ```
+- **React 18** with TypeScript
+- **Vite** for fast development
+- **Tailwind CSS** for styling
+- **Zustand** for state management
+- **Responsive Design** with mobile-first approach
 
-## Project Structure
+## 🔧 Development
 
+### Project Structure
 ```
 .github/browser/
 ├── src/
-│   ├── components/
-│   │   ├── three/          # 3D visualization components
-│   │   ├── ui/             # UI components
-│   │   ├── audio/          # Audio system
-│   │   └── layout/         # Layout components
-│   ├── pages/              # Page components
-│   ├── store/              # Zustand state management
-│   └── styles/             # Global styles
-├── public/                 # Static assets
-├── package.json
-├── vite.config.ts
-├── tailwind.config.ts
-└── tsconfig.json
+│   ├── pages/          # Main application pages
+│   ├── components/     # Reusable UI components
+│   ├── store/         # State management
+│   ├── styles/        # Global styles
+│   └── utils/         # Utility functions
+├── index.html         # Entry point
+└── package.json       # Dependencies
 ```
 
-## Technology Stack
+### Available Scripts
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **Three.js** for 3D graphics and animations
-- **Tailwind CSS** for styling and responsive design
-- **Zustand** for lightweight state management
-- **Web Audio API** for sound effects
+## 🌐 Accessing the Application
 
-## Configuration
+**Current Status**: ✅ Running on http://localhost:3001/
 
-### Environment Variables
-Create a `.env` file:
-```env
-VITE_API_URL=your_api_endpoint
-VITE_ENABLE_AUDIO=true
-VITE_ENABLE_3D=true
-VITE_DEBUG_MODE=false
-```
+If the port changes, check the terminal output for the correct URL.
 
-### Theme Customization
-Colors and theme settings can be modified in `tailwind.config.ts`:
-```typescript
-theme: {
-  extend: {
-    colors: {
-      primary: '#00FF41',    // Matrix green
-      secondary: '#003B00',  // Dark green
-      accent: '#39FF14'      // Bright green
-    }
-  }
-}
-```
+## 📋 Browser Compatibility
 
-## Performance Considerations
+- Chrome/Chromium (recommended)
+- Firefox
+- Safari
+- Edge
 
-The application is optimized for performance with:
-- **Code splitting** for 3D components
-- **Lazy loading** of heavy assets
-- **Memoized** expensive calculations
-- **Hardware acceleration** for 3D graphics
-- **Debounced** user interactions
+## 🎯 Usage Instructions
 
-## Browser Compatibility
+1. **Navigate** to http://localhost:3001/
+2. **Explore** different pages using the navigation
+3. **Test** interactive elements like FAQ accordions
+4. **Simulate** wallet connection on the Login page
+5. **View** responsive design by resizing your browser
 
-- **Chrome/Edge 90+**: Full support (recommended)
-- **Firefox 88+**: Full support
-- **Safari 14+**: Most features supported
-- **Mobile browsers**: Responsive design with optimized 3D performance
-
-## Deployment
-
-The application can be deployed to any static hosting service:
-
-### Vercel
-```bash
-npm run build
-vercel --prod
-```
-
-### Netlify
-```bash
-npm run build
-# Deploy the dist/ folder
-```
-
-### GitHub Pages
-```bash
-npm run build
-# Push dist/ folder to gh-pages branch
-```
-
-## Development Notes
-
-- 3D components may impact performance on lower-end devices
-- Audio features require user interaction to start (browser security)
-- WebGL is required for 3D visualizations
-- Consider disabling 3D features for mobile devices if needed
-
-This enhanced browser application provides a cutting-edge user experience while maintaining compatibility with the core PolyBets platform functionality.
+The application is fully functional with all pages working correctly!
