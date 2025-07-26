@@ -1,4 +1,4 @@
-## USDe/sUSDe Yield Optimizer Website
+## USDe/sUSDe Yield Optimizer Website (currently under development)
 -A comprehensive DeFi platform for optimizing USDe/sUSDe yields on the Converge network. The core feature is an automated yield optimization engine that aggregates opportunities from protocols like Strata, Terminal, and Ethereal, using machine learning for risk-adjusted rebalancing and customizable vaults to deliver enhanced returns.
 
 ## Overview
