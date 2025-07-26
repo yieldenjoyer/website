@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DeFi Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="sticky-header">
+        <nav class="container">
+            <div class="nav-brand">
+                <h1 class="logo">DeFi Portfolio</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="crypto-example.html">Home</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="pools.html">Pools</a></li>
+                <li><a href="crypto-example.html#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Portfolio Dashboard</h1>
+                <div class="wallet-info">
+                    <span id="walletStatus">Not Connected</span>
+                    <button id="connectWallet" class="btn btn-primary">Connect MetaMask</button>
+                </div>
+            </div>
+
+            <!-- Key Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3 class="metric-title">30d APY</h3>
+                        <div class="metric-icon">📈</div>
+                    </div>
+                    <div class="metric-value" id="apyMetric">--</div>
+                    <div class="metric-change positive" id="apyChange">--</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3 class="metric-title">Balance</h3>
+                        <div class="metric-icon">💰</div>
+                    </div>
+                    <div class="metric-value" id="balanceMetric">--</div>
+                    <div class="metric-change" id="balanceChange">--</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3 class="metric-title">Net Funding P&L</h3>
+                        <div class="metric-icon">⚖️</div>
+                    </div>
+                    <div class="metric-value" id="pnlMetric">--</div>
+                    <div class="metric-change" id="pnlChange">--</div>
+                </div>
+
+                <div class="metric-card deposit-card">
+                    <div class="metric-header">
+                        <h3 class="metric-title">Deposit Details</h3>
+                        <div class="metric-icon">🏦</div>
+                    </div>
+                    <div class="deposit-info" id="depositInfo">
+                        <div class="deposit-item">
+                            <span>Total Deposited:</span>
+                            <span id="totalDeposited">--</span>
+                        </div>
+                        <div class="deposit-item">
+                            <span>Active Strategies:</span>
+                            <span id="activeStrategies">--</span>
+                        </div>
+                        <div class="deposit-item">
+                            <span>Avg APY:</span>
+                            <span id="avgApy">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Section -->
+            <div class="activity-section">
+                <div class="activity-controls">
+                    <h2 class="section-title">Recent Activity</h2>
+                    <div class="activity-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="deposits">Deposits</button>
+                        <button class="filter-btn" data-filter="withdrawals">Withdrawals</button>
+                        <button class="filter-btn" data-filter="earnings">Earnings</button>
+                    </div>
+                    <div class="activity-search">
+                        <input type="text" class="search-input" placeholder="Search transactions..." id="activitySearch">
+                    </div>
+                </div>
+
+                <div class="activity-table-container">
+                    <table class="activity-table" id="activityTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Asset</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <span class="empty-icon">📊</span>
+                                        <div>Connect your wallet to view activity</div>
+                                        <div class="empty-subtitle">Your transaction history will appear here</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Protocol Information Section -->
+            <div class="protocol-section">
+                <div class="protocol-info">
+                    <h2 class="protocol-title">Delta-Neutral Yield Strategy</h2>
+                    <p class="protocol-description">
+                        Our protocol employs sophisticated delta-neutral strategies to maximize yield while minimizing exposure to price volatility. 
+                        By combining lending, borrowing, and derivative positions, we create market-neutral exposure that generates consistent returns 
+                        regardless of market direction.
+                    </p>
+                    <div class="protocol-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">🛡️</span>
+                            <span>Risk Management</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⚡</span>
+                            <span>Auto-Rebalancing</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📊</span>
+                            <span>Real-time Analytics</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🔄</span>
+                            <span>Compound Yields</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <h3 class="social-title">Stay Connected</h3>
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn">
+                            <span class="social-icon">📱</span>
+                            <span>Telegram</span>
+                        </a>
+                        <a href="#" class="social-btn">
+                            <span class="social-icon">🐦</span>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-btn">
+                            <span class="social-icon">💬</span>
+                            <span>Discord</span>
+                        </a>
+                        <a href="#" class="social-btn">
+                            <span class="social-icon">📚</span>
+                            <span>GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>DeFi Portfolio</h4>
+                    <p>Built with ❤️ for the blockchain community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#" aria-label="GitHub">GitHub</a></li>
+                        <li><a href="#" aria-label="Discord">Discord</a></li>
+                        <li><a href="#" aria-label="Twitter">Twitter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" aria-label="Documentation">Docs</a></li>
+                        <li><a href="#" aria-label="Security Audits">Security</a></li>
+                        <li><a href="#" aria-label="Support">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DeFi Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mock data for demonstration
+        const mockActivityData = [
+            {
+                date: '2024-01-15',
+                type: 'deposit',
+                asset: 'USDC',
+                amount: '+5,000',
+                status: 'completed',
+                hash: '0x1a2b3c...'
+            },
+            {
+                date: '2024-01-14',
+                type: 'earn',
+                asset: 'ETH',
+                amount: '+0.125',
+                status: 'completed',
+                hash: '0x4d5e6f...'
+            },
+            {
+                date: '2024-01-13',
+                type: 'deposit',
+                asset: 'DAI',
+                amount: '+2,500',
+                status: 'completed',
+                hash: '0x7g8h9i...'
+            },
+            {
+                date: '2024-01-12',
+                type: 'withdraw',
+                asset: 'USDT',
+                amount: '-1,000',
+                status: 'pending',
+                hash: '0xjk1l2m...'
+            },
+            {
+                date: '2024-01-11',
+                type: 'earn',
+                asset: 'WBTC',
+                amount: '+0.0025',
+                status: 'completed',
+                hash: '0x3n4o5p...'
+            }
+        ];
+
+        let currentFilter = 'all';
+        let isWalletConnected = false;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            updateMetrics();
+        });
+
+        function setupEventListeners() {
+            // Wallet connection
+            document.getElementById('connectWallet').addEventListener('click', connectWallet);
+            
+            // Activity filters
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.filter;
+                    filterActivity();
+                });
+            });
+
+            // Search functionality
+            document.getElementById('activitySearch').addEventListener('input', filterActivity);
+        }
+
+        async function connectWallet() {
+            const button = document.getElementById('connectWallet');
+            const status = document.getElementById('walletStatus');
+            
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    button.textContent = 'Connecting...';
+                    button.disabled = true;
+                    
+                    // Request account access
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    
+                    // Simulate connection delay
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Update UI
+                    status.textContent = `${account.slice(0, 6)}...${account.slice(-4)}`;
+                    button.textContent = 'Connected ✅';
+                    button.classList.add('connected');
+                    isWalletConnected = true;
+                    
+                    // Load user data
+                    loadUserData();
+                    populateActivityTable();
+                    
+                } catch (error) {
+                    console.error('Connection error:', error);
+                    button.textContent = 'Connect MetaMask';
+                    button.disabled = false;
+                    status.textContent = 'Connection Failed';
+                }
+            } else {
+                alert('Please install MetaMask to use this feature');
+            }
+        }
+
+        function loadUserData() {
+            // Simulate loading user data from Ethereal Protocol
+            // In real implementation, this would make API calls to your backend
+            
+            // Update metrics with mock data
+            document.getElementById('apyMetric').textContent = '18.4%';
+            document.getElementById('apyChange').textContent = '+2.1% from last month';
+            
+            document.getElementById('balanceMetric').textContent = '$47,234.56';
+            document.getElementById('balanceChange').textContent = '+$1,234.56 (24h)';
+            document.getElementById('balanceChange').className = 'metric-change positive';
+            
+            document.getElementById('pnlMetric').textContent = '+$2,847.32';
+            document.getElementById('pnlChange').textContent = '+12.4% (30d)';
+            document.getElementById('pnlChange').className = 'metric-change positive';
+            
+            document.getElementById('totalDeposited').textContent = '$45,000.00';
+            document.getElementById('activeStrategies').textContent = '3';
+            document.getElementById('avgApy').textContent = '18.4%';
+        }
+
+        function populateActivityTable() {
+            const tbody = document.getElementById('activityTableBody');
+            tbody.innerHTML = mockActivityData.map(activity => `
+                <tr>
+                    <td>${formatDate(activity.date)}</td>
+                    <td><span class="activity-type ${activity.type}">${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}</span></td>
+                    <td><span class="asset-symbol">${activity.asset}</span></td>
+                    <td class="amount ${activity.amount.startsWith('+') ? 'positive' : ''}">${activity.amount}</td>
+                    <td><span class="status-badge ${activity.status}">${activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}</span></td>
+                    <td><a href="#" class="hash-link">${activity.hash}</a></td>
+                </tr>
+            `).join('');
+        }
+
+        function filterActivity() {
+            if (!isWalletConnected) return;
+            
+            const searchTerm = document.getElementById('activitySearch').value.toLowerCase();
+            const filteredData = mockActivityData.filter(activity => {
+                const matchesFilter = currentFilter === 'all' || activity.type === currentFilter.slice(0, -1);
+                const matchesSearch = activity.asset.toLowerCase().includes(searchTerm) || 
+                                    activity.type.toLowerCase().includes(searchTerm) ||
+                                    activity.hash.toLowerCase().includes(searchTerm);
+                return matchesFilter && matchesSearch;
+            });
+            
+            const tbody = document.getElementById('activityTableBody');
+            if (filteredData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <span class="empty-icon">🔍</span>
+                                <div>No transactions found</div>
+                                <div class="empty-subtitle">Try adjusting your search or filter</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML = filteredData.map(activity => `
+                    <tr>
+                        <td>${formatDate(activity.date)}</td>
+                        <td><span class="activity-type ${activity.type}">${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}</span></td>
+                        <td><span class="asset-symbol">${activity.asset}</span></td>
+                        <td class="amount ${activity.amount.startsWith('+') ? 'positive' : ''}">${activity.amount}</td>
+                        <td><span class="status-badge ${activity.status}">${activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}</span></td>
+                        <td><a href="#" class="hash-link">${activity.hash}</a></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function updateMetrics() {
+            // Placeholder for real-time metric updates
+            // This would typically connect to WebSocket or poll an API
+            
+            if (!isWalletConnected) {
+                document.getElementById('apyMetric').textContent = '--';
+                document.getElementById('balanceMetric').textContent = '--';
+                document.getElementById('pnlMetric').textContent = '--';
+                document.getElementById('totalDeposited').textContent = '--';
+                document.getElementById('activeStrategies').textContent = '--';
+                document.getElementById('avgApy').textContent = '--';
+            }
+        }
+
+        // Example of how you might integrate with Ethereal Protocol
+        /*
+        async function fetchUserPortfolio() {
+            try {
+                const response = await fetch('/api/user/portfolio', {
+                    headers: {
+                        'Authorization': `Bearer ${userToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const portfolio = await response.json();
+                
+                // Update UI with real data
+                document.getElementById('balanceMetric').textContent = `$${portfolio.totalBalance.toLocaleString()}`;
+                document.getElementById('apyMetric').textContent = `${portfolio.apy}%`;
+                // ... etc
+                
+            } catch (error) {
+                console.error('Failed to fetch portfolio:', error);
+            }
+        }
+        */
+
+        // Example WebSocket connection for real-time updates
+        /*
+        function connectWebSocket() {
+            const ws = new WebSocket('wss://api.ethereal.finance/ws');
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'portfolio_update') {
+                    updateMetrics(data.portfolio);
+                } else if (data.type === 'new_transaction') {
+                    addTransactionToTable(data.transaction);
+                }
+            };
+        }
+        */
+    </script>
+</body>
+</html>

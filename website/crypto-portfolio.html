@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeFi Yield Portfolio - Explore 20+ Protocols</title>
+    <link rel="stylesheet" href="crypto-portfolio.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <header class="sticky-header">
+        <nav class="container">
+            <div class="nav-brand">
+                <h1 class="logo">DeFi Portfolio</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#yields">Yields</a></li>
+                <li><a href="#rewards">Rewards</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="hero-title">Explore the Best Yields from 20+ Protocols</h1>
+                <p class="hero-subtitle">Maximize your DeFi returns with our comprehensive yield aggregation platform</p>
+                <a href="#yields" class="btn btn-primary">Explore Yields</a>
+            </div>
+        </section>
+
+        <!-- Real-time APY Monitoring Section -->
+        <section id="euler-monitoring" class="euler-section">
+            <div class="container">
+                <h2 class="section-title">Real-time Euler APY Monitoring</h2>
+                <div class="monitoring-controls">
+                    <div class="chain-selector">
+                        <label for="chainSelect">Chain:</label>
+                        <select id="chainSelect">
+                            <option value="ethereum">Ethereum</option>
+                            <option value="polygon">Polygon</option>
+                            <option value="arbitrum">Arbitrum</option>
+                            <option value="optimism">Optimism</option>
+                        </select>
+                    </div>
+                    <div class="update-status">
+                        <span id="lastUpdate">Last updated: <span id="updateTime">--:--</span></span>
+                        <div class="update-indicator" id="updateIndicator">●</div>
+                    </div>
+                </div>
+                <div class="euler-markets" id="eulerMarkets">
+                    <!-- Dynamic Euler market data will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Settings & Rewards Section -->
+        <section id="risk-rewards" class="risk-section">
+            <div class="container">
+                <h2 class="section-title">Risk Settings & Rewards</h2>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Risk Preference</h3>
+                        <div class="risk-slider-container">
+                            <label for="riskSlider">Risk Level:</label>
+                            <input type="range" id="riskSlider" min="1" max="3" value="2">
+                            <div class="risk-labels">
+                                <span>Low</span>
+                                <span>Medium</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                        <div class="risk-description" id="riskDescription">
+                            Medium risk - Balanced approach with moderate leverage
+                        </div>
+                    </div>
+                    <div class="rewards-card">
+                        <h3>Additional Rewards</h3>
+                        <div class="rewards-display">
+                            <div class="reward-item">
+                                <span class="reward-label">rEUL Balance:</span>
+                                <span class="reward-value" id="rEulBalance">--</span>
+                            </div>
+                            <div class="reward-item">
+                                <span class="reward-label">Points:</span>
+                                <span class="reward-value" id="pointsBalance">--</span>
+                            </div>
+                            <div class="reward-item">
+                                <span class="reward-label">Claimable:</span>
+                                <span class="reward-value" id="claimableRewards">--</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="claimRewardsBtn">Claim Rewards</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unified Dashboard Section -->
+        <section id="unified-dashboard" class="dashboard-section">
+            <div class="container">
+                <h2 class="section-title">Unified Portfolio Dashboard</h2>
+                <div class="portfolio-summary">
+                    <div class="summary-card">
+                        <h3>Total Portfolio Value</h3>
+                        <div class="portfolio-value" id="totalPortfolioValue">$0.00</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total APY</h3>
+                        <div class="portfolio-apy" id="totalPortfolioAPY">0.00%</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Daily Earnings</h3>
+                        <div class="portfolio-earnings" id="dailyEarnings">$0.00</div>
+                    </div>
+                </div>
+                <div class="positions-grid">
+                    <div class="position-category">
+                        <h3>Terminal Spot Positions</h3>
+                        <div class="positions-list" id="terminalPositions">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    <div class="position-category">
+                        <h3>Ethereal Perpetuals</h3>
+                        <div class="positions-list" id="etherealPositions">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    <div class="position-category">
+                        <h3>Lending Positions</h3>
+                        <div class="positions-list" id="lendingPositions">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ethena/Converge Integration Section -->
+        <section id="ethena-integration" class="ethena-section">
+            <div class="container">
+                <h2 class="section-title">USDe/sUSDe Yield Optimization</h2>
+                <div class="optimization-grid">
+                    <div class="optimization-card">
+                        <h3>USDe Strategies</h3>
+                        <div class="strategy-options">
+                            <div class="strategy-option">
+                                <input type="checkbox" id="usdeBasic" class="strategy-checkbox">
+                                <label for="usdeBasic">Basic USDe Yield (12.5% APY)</label>
+                            </div>
+                            <div class="strategy-option">
+                                <input type="checkbox" id="usdeOptimized" class="strategy-checkbox">
+                                <label for="usdeOptimized">Optimized USDe Strategy (18.2% APY)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="optimization-card">
+                        <h3>sUSDe Strategies</h3>
+                        <div class="strategy-options">
+                            <div class="strategy-option">
+                                <input type="checkbox" id="susdeStaking" class="strategy-checkbox">
+                                <label for="susdeStaking">sUSDe Staking (15.8% APY)</label>
+                            </div>
+                            <div class="strategy-option">
+                                <input type="checkbox" id="susdeCompound" class="strategy-checkbox">
+                                <label for="susdeCompound">sUSDe Compounding (22.1% APY)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="optimization-controls">
+                    <button class="btn btn-primary" id="enableOptimization">Enable Optimization</button>
+                    <button class="btn btn-secondary" id="viewOptimizationDetails">View Details</button>
+                </div>
+                <div class="optimization-status" id="optimizationStatus" style="display: none;">
+                    <p>✅ Yield optimization enabled! Your assets are being automatically optimized for maximum returns.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="yields" class="yields-section">
+            <div class="container">
+                <h2 class="section-title">Stablecoin Yields</h2>
+                <div class="strategy-grid">
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">💰</span>
+                            <h3 class="asset-name">USDC</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">26.30%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">100 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Aave</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="USDC">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">💎</span>
+                            <h3 class="asset-name">USDT</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">22.15%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">85 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Compound</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="USDT">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">🪙</span>
+                            <h3 class="asset-name">DAI</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">24.80%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">95 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">MakerDAO</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="DAI">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Crypto Assets</h2>
+                <div class="strategy-grid">
+                    <div class="yield-card featured">
+                        <div class="card-header">
+                            <span class="asset-icon">Ξ</span>
+                            <h3 class="asset-name">ETH</h3>
+                            <span class="featured-badge">Featured</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">18.75%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">50 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Lido</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="ETH">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">₿</span>
+                            <h3 class="asset-name">WBTC</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">15.40%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">20 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Curve</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="WBTC">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">🟣</span>
+                            <h3 class="asset-name">MATIC</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">12.90%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">150 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">QuickSwap</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="MATIC">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rewards" class="rewards-section">
+            <div class="container">
+                <h2 class="section-title">Rewards Distribution</h2>
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Rewards by Asset</h3>
+                        <canvas id="rewardsChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>APY Comparison</h3>
+                        <canvas id="apyChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="rewards-table-container">
+                    <h3>Detailed Overview</h3>
+                    <table class="rewards-table">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>APY</th>
+                                <th>Rewards</th>
+                                <th>Protocol</th>
+                                <th>Chain</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="asset-icon">💰</span> USDC</td>
+                                <td class="apy-cell">26.30%</td>
+                                <td class="rewards-cell">100 coins</td>
+                                <td>Aave</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">Ξ</span> ETH</td>
+                                <td class="apy-cell">18.75%</td>
+                                <td class="rewards-cell">50 coins</td>
+                                <td>Lido</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">💎</span> USDT</td>
+                                <td class="apy-cell">22.15%</td>
+                                <td class="rewards-cell">85 coins</td>
+                                <td>Compound</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">₿</span> WBTC</td>
+                                <td class="apy-cell">15.40%</td>
+                                <td class="rewards-cell">20 coins</td>
+                                <td>Curve</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">🪙</span> DAI</td>
+                                <td class="apy-cell">24.80%</td>
+                                <td class="rewards-cell">95 coins</td>
+                                <td>MakerDAO</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">🟣</span> MATIC</td>
+                                <td class="apy-cell">12.90%</td>
+                                <td class="rewards-cell">150 coins</td>
+                                <td>QuickSwap</td>
+                                <td>Polygon</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="cta-title">Ready to Start Earning?</h2>
+                <p class="cta-subtitle">Join thousands of users maximizing their DeFi yields</p>
+                <button class="btn btn-primary btn-large" id="connectWallet">Connect Wallet</button>
+                <div class="loading-indicator" id="connectingLoader" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Connecting...</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>DeFi Portfolio</h4>
+                    <p>Built with ❤️ for the blockchain community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#" aria-label="GitHub">GitHub</a></li>
+                        <li><a href="#" aria-label="Discord">Discord</a></li>
+                        <li><a href="#" aria-label="Twitter">Twitter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" aria-label="Documentation">Docs</a></li>
+                        <li><a href="#" aria-label="Security Audits">Security</a></li>
+                        <li><a href="#" aria-label="Support">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DeFi Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Asset Details -->
+    <div id="assetModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Asset Details</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js setup for rewards visualization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Rewards Chart
+            const rewardsCtx = document.getElementById('rewardsChart').getContext('2d');
+            new Chart(rewardsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['USDC', 'USDT', 'DAI', 'ETH', 'WBTC', 'MATIC'],
+                    datasets: [{
+                        label: 'Rewards (coins)',
+                        data: [100, 85, 95, 50, 20, 150],
+                        backgroundColor: '#8A9A5B',
+                        borderColor: '#6B7A44',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // APY Chart
+            const apyCtx = document.getElementById('apyChart').getContext('2d');
+            new Chart(apyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['USDC', 'USDT', 'DAI', 'ETH', 'WBTC', 'MATIC'],
+                    datasets: [{
+                        label: 'APY (%)',
+                        data: [26.30, 22.15, 24.80, 18.75, 15.40, 12.90],
+                        borderColor: '#8A9A5B',
+                        backgroundColor: 'rgba(138, 154, 91, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Interactive features
+            const detailButtons = document.querySelectorAll('.btn-details');
+            const modal = document.getElementById('assetModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModal = document.getElementById('closeModal');
+
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const asset = this.getAttribute('data-asset');
+                    showAssetDetails(asset);
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            function showAssetDetails(asset) {
+                const assetData = {
+                    'USDC': {
+                        name: 'USD Coin',
+                        apy: '26.30%',
+                        rewards: '100 coins',
+                        protocol: 'Aave',
+                        details: 'Stable yield from USDC lending on Aave protocol with daily compounding rewards.'
+                    },
+                    'ETH': {
+                        name: 'Ethereum',
+                        apy: '18.75%',
+                        rewards: '50 coins',
+                        protocol: 'Lido',
+                        details: 'Liquid staking rewards from Ethereum 2.0 staking through Lido protocol.'
+                    },
+                    'USDT': {
+                        name: 'Tether',
+                        apy: '22.15%',
+                        rewards: '85 coins',
+                        protocol: 'Compound',
+                        details: 'High-yield lending on Compound protocol with automated reward distribution.'
+                    },
+                    'WBTC': {
+                        name: 'Wrapped Bitcoin',
+                        apy: '15.40%',
+                        rewards: '20 coins',
+                        protocol: 'Curve',
+                        details: 'BTC yield through Curve liquidity provision and CRV reward farming.'
+                    },
+                    'DAI': {
+                        name: 'Dai Stablecoin',
+                        apy: '24.80%',
+                        rewards: '95 coins',
+                        protocol: 'MakerDAO',
+                        details: 'Stable returns from DAI savings rate plus additional MKR governance rewards.'
+                    },
+                    'MATIC': {
+                        name: 'Polygon',
+                        apy: '12.90%',
+                        rewards: '150 coins',
+                        protocol: 'QuickSwap',
+                        details: 'High volume LP rewards on Polygon network with QUICK token incentives.'
+                    }
+                };
+
+                const data = assetData[asset];
+                if (data) {
+                    modalTitle.textContent = `${data.name} (${asset})`;
+                    modalBody.innerHTML = `
+                        <div class="modal-details">
+                            <div class="detail-row">
+                                <strong>APY:</strong> <span class="highlight">${data.apy}</span>
+                            </div>
+                            <div class="detail-row">
+                                <strong>Rewards:</strong> <span class="highlight">${data.rewards}</span>
+                            </div>
+                            <div class="detail-row">
+                                <strong>Protocol:</strong> <span class="highlight">${data.protocol}</span>
+                            </div>
+                            <div class="detail-description">
+                                <strong>Details:</strong> ${data.details}
+                            </div>
+                            <div class="modal-actions">
+                                <button class="btn btn-primary">Start Earning</button>
+                                <button class="btn btn-secondary">Learn More</button>
+                            </div>
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                }
+            }
+
+            // Connect Wallet functionality
+            const connectButton = document.getElementById('connectWallet');
+            const loadingIndicator = document.getElementById('connectingLoader');
+
+            connectButton.addEventListener('click', function() {
+                this.style.display = 'none';
+                loadingIndicator.style.display = 'flex';
+                
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                    this.textContent = 'Wallet Connected ✅';
+                    this.style.display = 'inline-block';
+                    this.disabled = true;
+                    this.classList.add('connected');
+                }, 2500);
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Initialize advanced features
+            initializeEulerMonitoring();
+            initializeRiskSettings();
+            initializeUnifiedDashboard();
+            initializeEthenaIntegration();
+        });
+
+        // 1. Real-time Euler APY Monitoring
+        function initializeEulerMonitoring() {
+            const chainSelect = document.getElementById('chainSelect');
+            const updateIndicator = document.getElementById('updateIndicator');
+            const updateTime = document.getElementById('updateTime');
+            const eulerMarkets = document.getElementById('eulerMarkets');
+
+            // Mock Euler API data
+            const mockEulerData = {
+                ethereum: [
+                    { asset: 'USDC', apy: 15.2, tvl: '45.2M', utilization: 78 },
+                    { asset: 'USDT', apy: 12.8, tvl: '32.1M', utilization: 65 },
+                    { asset: 'DAI', apy: 14.5, tvl: '28.7M', utilization: 72 },
+                    { asset: 'WETH', apy: 8.9, tvl: '67.3M', utilization: 55 }
+                ],
+                polygon: [
+                    { asset: 'USDC', apy: 18.7, tvl: '22.1M', utilization: 82 },
+                    { asset: 'USDT', apy: 16.3, tvl: '19.8M', utilization: 75 },
+                    { asset: 'WMATIC', apy: 12.4, tvl: '15.6M', utilization: 68 }
+                ],
+                arbitrum: [
+                    { asset: 'USDC', apy: 16.9, tvl: '38.4M', utilization: 79 },
+                    { asset: 'WETH', apy: 9.8, tvl: '52.1M', utilization: 58 },
+                    { asset: 'ARB', apy: 22.1, tvl: '12.3M', utilization: 85 }
+                ],
+                optimism: [
+                    { asset: 'USDC', apy: 17.3, tvl: '29.7M', utilization: 81 },
+                    { asset: 'WETH', apy: 10.2, tvl: '41.8M', utilization: 61 },
+                    { asset: 'OP', apy: 19.5, tvl: '8.9M', utilization: 77 }
+                ]
+            };
+
+            // Fetch APY data from Euler API (mock implementation)
+            async function fetchEulerAPY(chain = 'ethereum') {
+                try {
+                    // In production, this would be:
+                    // const response = await axios.get(`https://api.euler.finance/markets?chain=${chain}`);
+                    // return response.data;
+                    
+                    // Mock delay for realism
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    return mockEulerData[chain] || mockEulerData.ethereum;
+                } catch (error) {
+                    console.error('Error fetching Euler APY:', error);
+                    return mockEulerData.ethereum;
+                }
+            }
+
+            // Update dashboard with APY data
+            function updateDashboard(apyData) {
+                eulerMarkets.innerHTML = '';
+                
+                apyData.forEach(market => {
+                    const marketCard = document.createElement('div');
+                    marketCard.className = 'yield-card';
+                    marketCard.innerHTML = `
+                        <div class="card-header">
+                            <span class="asset-icon">${getAssetIcon(market.asset)}</span>
+                            <h3 class="asset-name">${market.asset}</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">Supply APY</span>
+                                <span class="apy-value">${market.apy}%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">TVL</span>
+                                <span class="rewards-value">$${market.tvl}</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Utilization</span>
+                                <span class="protocol-value">${market.utilization}%</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" onclick="supplyToEuler('${market.asset}')">Supply</button>
+                        </div>
+                    `;
+                    eulerMarkets.appendChild(marketCard);
+                });
+
+                // Update timestamp
+                updateTime.textContent = new Date().toLocaleTimeString();
+                updateIndicator.style.color = '#4CAF50';
+            }
+
+            function getAssetIcon(asset) {
+                const icons = {
+                    'USDC': '💰', 'USDT': '💎', 'DAI': '🪙', 'WETH': 'Ξ',
+                    'WMATIC': '🟣', 'ARB': '🔵', 'OP': '🔴'
+                };
+                return icons[asset] || '💰';
+            }
+
+            // Chain selector change handler
+            chainSelect.addEventListener('change', async () => {
+                updateIndicator.style.color = '#FFD700';
+                const apyData = await fetchEulerAPY(chainSelect.value);
+                updateDashboard(apyData);
+            });
+
+            // Auto-update every 30 seconds
+            setInterval(async () => {
+                const apyData = await fetchEulerAPY(chainSelect.value);
+                updateDashboard(apyData);
+            }, 30000);
+
+            // Initial load
+            fetchEulerAPY().then(updateDashboard);
+        }
+
+        // 2. Risk Settings & Rewards Integration
+        function initializeRiskSettings() {
+            const riskSlider = document.getElementById('riskSlider');
+            const riskDescription = document.getElementById('riskDescription');
+            const claimRewardsBtn = document.getElementById('claimRewardsBtn');
+
+            const riskDescriptions = {
+                1: 'Low risk - Conservative approach with stable yields and minimal leverage',
+                2: 'Medium risk - Balanced approach with moderate leverage and diversified strategies',
+                3: 'High risk - Aggressive strategies with maximum leverage and yield optimization'
+            };
+
+            // Risk slider handler
+            riskSlider.addEventListener('input', () => {
+                const value = riskSlider.value;
+                riskDescription.textContent = riskDescriptions[value];
+                localStorage.setItem('riskPreference', value);
+                updateYieldRecommendations(value);
+            });
+
+            // Load saved risk preference
+            const savedRisk = localStorage.getItem('riskPreference') || '2';
+            riskSlider.value = savedRisk;
+            riskDescription.textContent = riskDescriptions[savedRisk];
+
+            // Fetch rewards (mock implementation)
+            async function fetchRewards(walletAddress = '0x742d35Cc6639C0532fEb96Bb7C6d0AE8b6ad4B08') {
+                try {
+                    // In production, this would use ethers.js:
+                    // const contract = new ethers.Contract(rEUL_ADDRESS, rEUL_ABI, provider);
+                    // const balance = await contract.balanceOf(walletAddress);
+                    
+                    // Mock data
+                    return {
+                        rEulBalance: '1,247.83',
+                        pointsBalance: '18,936',
+                        claimableRewards: '342.15'
+                    };
+                } catch (error) {
+                    console.error('Error fetching rewards:', error);
+                    return { rEulBalance: '--', pointsBalance: '--', claimableRewards: '--' };
+                }
+            }
+
+            // Update rewards display
+            async function updateRewardsDisplay() {
+                const rewards = await fetchRewards();
+                document.getElementById('rEulBalance').textContent = rewards.rEulBalance;
+                document.getElementById('pointsBalance').textContent = rewards.pointsBalance;
+                document.getElementById('claimableRewards').textContent = rewards.claimableRewards;
+            }
+
+            // Claim rewards handler
+            claimRewardsBtn.addEventListener('click', async () => {
+                claimRewardsBtn.textContent = 'Claiming...';
+                claimRewardsBtn.disabled = true;
+                
+                try {
+                    // Mock claiming process
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    claimRewardsBtn.textContent = 'Claimed ✅';
+                    setTimeout(() => {
+                        claimRewardsBtn.textContent = 'Claim Rewards';
+                        claimRewardsBtn.disabled = false;
+                        updateRewardsDisplay();
+                    }, 3000);
+                } catch (error) {
+                    console.error('Error claiming rewards:', error);
+                    claimRewardsBtn.textContent = 'Error - Try Again';
+                    claimRewardsBtn.disabled = false;
+                }
+            });
+
+            // Initial rewards load
+            updateRewardsDisplay();
+            
+            // Update rewards every 5 minutes
+            setInterval(updateRewardsDisplay, 300000);
+        }
+
+        // 3. Unified Dashboard
+        function initializeUnifiedDashboard() {
+            const totalPortfolioValue = document.getElementById('totalPortfolioValue');
+            const totalPortfolioAPY = document.getElementById('totalPortfolioAPY');
+            const dailyEarnings = document.getElementById('dailyEarnings');
+            const terminalPositions = document.getElementById('terminalPositions');
+            const etherealPositions = document.getElementById('etherealPositions');
+            const lendingPositions = document.getElementById('lendingPositions');
+
+            // Fetch positions from different protocols
+            async function fetchPositions() {
+                try {
+                    // In production, these would be real API calls
+                    const [spot, perps, lending] = await Promise.all([
+                        fetchTerminalSpot(),
+                        fetchEtherealPerps(),
+                        fetchLendingPositions()
+                    ]);
+                    
+                    return { spot, perps, lending };
+                } catch (error) {
+                    console.error('Error fetching positions:', error);
+                    return { spot: [], perps: [], lending: [] };
+                }
+            }
+
+            async function fetchTerminalSpot() {
+                // Mock Terminal spot positions
+                return [
+                    { asset: 'ETH/USDC', size: '2.5 ETH', value: '$8,750', pnl: '+$342' },
+                    { asset: 'BTC/USDT', size: '0.15 BTC', value: '$6,480', pnl: '+$127' }
+                ];
+            }
+
+            async function fetchEtherealPerps() {
+                // Mock Ethereal perpetual positions
+                return [
+                    { asset: 'ETH-PERP', size: '5.0 ETH', leverage: '3x', pnl: '+$1,235' },
+                    { asset: 'SOL-PERP', size: '50 SOL', leverage: '2x', pnl: '-$89' }
+                ];
+            }
+
+            async function fetchLendingPositions() {
+                // Mock lending positions
+                return [
+                    { protocol: 'Aave', asset: 'USDC', supplied: '25,000', apy: '12.5%' },
+                    { protocol: 'Compound', asset: 'USDT', supplied: '18,500', apy: '10.8%' },
+                    { protocol: 'Euler', asset: 'DAI', supplied: '12,000', apy: '14.2%' }
+                ];
+            }
+
+            // Update dashboard
+            async function updateDashboard() {
+                const positions = await fetchPositions();
+                
+                // Calculate totals (mock calculation)
+                const totalValue = 87250.43;
+                const weightedAPY = 16.78;
+                const dailyEarn = totalValue * (weightedAPY / 100) / 365;
+
+                totalPortfolioValue.textContent = `$${totalValue.toLocaleString()}`;
+                totalPortfolioAPY.textContent = `${weightedAPY}%`;
+                dailyEarnings.textContent = `$${dailyEarn.toFixed(2)}`;
+
+                // Update position lists
+                updatePositionsList(terminalPositions, positions.spot, 'spot');
+                updatePositionsList(etherealPositions, positions.perps, 'perps');
+                updatePositionsList(lendingPositions, positions.lending, 'lending');
+            }
+
+            function updatePositionsList(container, positions, type) {
+                if (positions.length === 0) {
+                    container.innerHTML = '<p>No positions found</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                positions.forEach(position => {
+                    const positionElement = document.createElement('div');
+                    positionElement.className = 'position-item';
+                    
+                    if (type === 'spot') {
+                        positionElement.innerHTML = `
+                            <div class="position-header">
+                                <strong>${position.asset}</strong>
+                                <span class="position-pnl ${position.pnl.includes('+') ? 'positive' : 'negative'}">${position.pnl}</span>
+                            </div>
+                            <div class="position-details">
+                                <span>Size: ${position.size}</span>
+                                <span>Value: ${position.value}</span>
+                            </div>
+                        `;
+                    } else if (type === 'perps') {
+                        positionElement.innerHTML = `
+                            <div class="position-header">
+                                <strong>${position.asset}</strong>
+                                <span class="position-pnl ${position.pnl.includes('+') ? 'positive' : 'negative'}">${position.pnl}</span>
+                            </div>
+                            <div class="position-details">
+                                <span>Size: ${position.size}</span>
+                                <span>Leverage: ${position.leverage}</span>
+                            </div>
+                        `;
+                    } else if (type === 'lending') {
+                        positionElement.innerHTML = `
+                            <div class="position-header">
+                                <strong>${position.protocol} ${position.asset}</strong>
+                                <span class="position-apy">${position.apy}</span>
+                            </div>
+                            <div class="position-details">
+                                <span>Supplied: $${position.supplied}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    container.appendChild(positionElement);
+                });
+            }
+
+            // Initial load and periodic updates
+            updateDashboard();
+            setInterval(updateDashboard, 60000); // Update every minute
+        }
+
+        // 4. Ethena/Converge Integration
+        function initializeEthenaIntegration() {
+            const enableOptimizationBtn = document.getElementById('enableOptimization');
+            const viewOptimizationDetailsBtn = document.getElementById('viewOptimizationDetails');
+            const optimizationStatus = document.getElementById('optimizationStatus');
+            const strategyCheckboxes = document.querySelectorAll('.strategy-checkbox');
+
+            // Strategy checkbox handlers
+            strategyCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateOptimizationPreview();
+                });
+            });
+
+            function updateOptimizationPreview() {
+                const selectedStrategies = Array.from(strategyCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.id);
+                
+                console.log('Selected strategies:', selectedStrategies);
+                // Update preview calculations here
+            }
+
+            // Enable optimization
+            enableOptimizationBtn.addEventListener('click', async () => {
+                const selectedStrategies = Array.from(strategyCheckboxes)
+                    .filter(cb => cb.checked);
+
+                if (selectedStrategies.length === 0) {
+                    alert('Please select at least one strategy to enable optimization.');
+                    return;
+                }
+
+                enableOptimizationBtn.textContent = 'Enabling...';
+                enableOptimizationBtn.disabled = true;
+
+                try {
+                    // In production, this would interact with Ethena/Converge contracts:
+                    // const tx = await ethenaContract.optimizeYield(selectedStrategies);
+                    // await tx.wait();
+                    
+                    // Mock optimization process
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    
+                    optimizationStatus.style.display = 'block';
+                    enableOptimizationBtn.textContent = 'Optimization Enabled ✅';
+                    enableOptimizationBtn.classList.add('connected');
+                } catch (error) {
+                    console.error('Optimization error:', error);
+                    enableOptimizationBtn.textContent = 'Error - Try Again';
+                    enableOptimizationBtn.disabled = false;
+                }
+            });
+
+            // View optimization details
+            viewOptimizationDetailsBtn.addEventListener('click', () => {
+                const selectedStrategies = Array.from(strategyCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.nextElementSibling.textContent);
+
+                if (selectedStrategies.length === 0) {
+                    alert('No strategies selected.');
+                    return;
+                }
+
+                const details = `
+                    Selected Strategies:
+                    ${selectedStrategies.map(s => `• ${s}`).join('\n')}
+                    
+                    Optimization Benefits:
+                    • Automatic yield compounding
+                    • Cross-protocol arbitrage
+                    • Gas cost optimization
+                    • Risk-adjusted returns
+                `;
+
+                alert(details);
+            });
+        }
+
+        // Helper functions
+        function updateYieldRecommendations(riskLevel) {
+            // Update yield card recommendations based on risk level
+            console.log(`Updating recommendations for risk level: ${riskLevel}`);
+        }
+
+        function supplyToEuler(asset) {
+            alert(`Redirecting to supply ${asset} on Euler Finance...`);
+            // In production, this would open the Euler dApp
+        }
+
+        // Add CSS for new position items
+        const additionalCSS = `
+            <style>
+                .position-item {
+                    background-color: rgba(138, 154, 91, 0.1);
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin-bottom: 0.8rem;
+                    border: 1px solid #333333;
+                }
+                
+                .position-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .position-details {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 0.9rem;
+                    color: #CCCCCC;
+                }
+                
+                .position-pnl.positive {
+                    color: #4CAF50;
+                    font-weight: 600;
+                }
+                
+                .position-pnl.negative {
+                    color: #F44336;
+                    font-weight: 600;
+                }
+                
+                .position-apy {
+                    color: #8A9A5B;
+                    font-weight: 600;
+                }
+            </style>
+        `;
+        
+        document.head.insertAdjacentHTML('beforeend', additionalCSS);
+    </script>
+</body>
+</html>

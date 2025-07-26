@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # Euler Optimizer Service
+  euler-optimizer:
+    build: .
+    container_name: euler-optimizer
+    environment:
+      NODE_ENV: development
+      
+      # Database
+      DATABASE_URL: sqlite:///app/data/euler-optimizer.db
+      
+      # Chain RPC URLs (use public endpoints for testing)
+      ETHEREUM_RPC_URL: ${ETHEREUM_RPC_URL:-https://eth.llamarpc.com}
+      ARBITRUM_RPC_URL: ${ARBITRUM_RPC_URL:-https://arbitrum.llamarpc.com}
+      BASE_RPC_URL: ${BASE_RPC_URL:-https://base.llamarpc.com}
+      OPTIMISM_RPC_URL: ${OPTIMISM_RPC_URL:-https://optimism.llamarpc.com}
+      
+      # Euler Optimizer Settings
+      EULER_OPTIMIZER_ENABLED: "true"
+      MIN_YIELD_IMPROVEMENT: ${MIN_YIELD_IMPROVEMENT:-0.02}
+      MAX_GAS_COST_PERCENT: ${MAX_GAS_COST_PERCENT:-0.01}
+      REBALANCE_INTERVAL: ${REBALANCE_INTERVAL:-300000}  # 5 minutes for testing
+      MAX_LTV_UTILIZATION: ${MAX_LTV_UTILIZATION:-0.8}
+      
+      # Test Mode Settings
+      DRY_RUN: ${DRY_RUN:-true}  # Don't execute real transactions
+      EULER_OPTIMIZER_DEBUG: "true"
+      
+      # Mock transaction executor
+      USE_MOCK_EXECUTOR: "true"
+      
+      # Alert system
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      ALERT_EMAIL: ${ALERT_EMAIL:-}
+      
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./src:/app/src:ro
+      - ./config:/app/config:ro
+    ports:
+      - "3001:3000"  # Dashboard port
+    command: npm run euler:test
+    networks:
+      - euler-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Mock services for testing
+  mock-bridge:
+    image: node:18-alpine
+    container_name: euler-mock-bridge
+    working_dir: /app
+    volumes:
+      - ./test/mocks:/app
+    command: node bridge-mock-server.js
+    ports:
+      - "8001:8000"
+    networks:
+      - euler-network
+
+  # Optional: Local database for persistence
+  postgres:
+    image: postgres:15-alpine
+    container_name: euler-postgres
+    environment:
+      POSTGRES_DB: euler_optimizer
+      POSTGRES_USER: euler
+      POSTGRES_PASSWORD: euler_test_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/db:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    networks:
+      - euler-network
+    profiles:
+      - with-postgres
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: euler-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - euler-network
+    profiles:
+      - with-cache
+
+  # Monitoring dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: euler-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    ports:
+      - "3002:3000"
+    networks:
+      - euler-network
+    profiles:
+      - monitoring
+
+networks:
+  euler-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  grafana_data:

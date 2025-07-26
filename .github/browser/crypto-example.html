@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeFi Yield Portfolio - Explore 20+ Protocols</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="sticky-header">
+        <nav class="container">
+            <div class="nav-brand">
+                <h1 class="logo">DeFi Portfolio</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="crypto-example.html" class="active">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="pools.html">Pools</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="hero-title">Explore the Best Yields from 20+ Protocols</h1>
+                <p class="hero-subtitle">Maximize your DeFi returns with our comprehensive yield aggregation platform</p>
+                <a href="#yields" class="btn btn-primary">Explore Yields</a>
+            </div>
+        </section>
+
+        <section id="yields" class="yields-section">
+            <div class="container">
+                <h2 class="section-title">Stablecoin Yields</h2>
+                <div class="strategy-grid">
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">💰</span>
+                            <h3 class="asset-name">USDC</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">26.30%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">100 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Aave</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="USDC">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">💎</span>
+                            <h3 class="asset-name">USDT</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">22.15%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">85 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Compound</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="USDT">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">🪙</span>
+                            <h3 class="asset-name">DAI</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">24.80%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">95 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">MakerDAO</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="DAI">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Crypto Assets</h2>
+                <div class="strategy-grid">
+                    <div class="yield-card featured">
+                        <div class="card-header">
+                            <span class="asset-icon">Ξ</span>
+                            <h3 class="asset-name">ETH</h3>
+                            <span class="featured-badge">Featured</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">18.75%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">50 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Lido</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="ETH">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">₿</span>
+                            <h3 class="asset-name">WBTC</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">15.40%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">20 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">Curve</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="WBTC">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="yield-card">
+                        <div class="card-header">
+                            <span class="asset-icon">🟣</span>
+                            <h3 class="asset-name">MATIC</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="yield-info">
+                                <span class="apy-label">APY</span>
+                                <span class="apy-value">12.90%</span>
+                            </div>
+                            <div class="rewards-info">
+                                <span class="rewards-label">Rewards</span>
+                                <span class="rewards-value">150 coins</span>
+                            </div>
+                            <div class="protocol-info">
+                                <span class="protocol-label">Protocol</span>
+                                <span class="protocol-value">QuickSwap</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-details" data-asset="MATIC">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rewards" class="rewards-section">
+            <div class="container">
+                <h2 class="section-title">Rewards Distribution</h2>
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Rewards by Asset</h3>
+                        <canvas id="rewardsChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>APY Comparison</h3>
+                        <canvas id="apyChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="rewards-table-container">
+                    <h3>Detailed Overview</h3>
+                    <table class="rewards-table">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>APY</th>
+                                <th>Rewards</th>
+                                <th>Protocol</th>
+                                <th>Chain</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="asset-icon">💰</span> USDC</td>
+                                <td class="apy-cell">26.30%</td>
+                                <td class="rewards-cell">100 coins</td>
+                                <td>Aave</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">Ξ</span> ETH</td>
+                                <td class="apy-cell">18.75%</td>
+                                <td class="rewards-cell">50 coins</td>
+                                <td>Lido</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">💎</span> USDT</td>
+                                <td class="apy-cell">22.15%</td>
+                                <td class="rewards-cell">85 coins</td>
+                                <td>Compound</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">₿</span> WBTC</td>
+                                <td class="apy-cell">15.40%</td>
+                                <td class="rewards-cell">20 coins</td>
+                                <td>Curve</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">🪙</span> DAI</td>
+                                <td class="apy-cell">24.80%</td>
+                                <td class="rewards-cell">95 coins</td>
+                                <td>MakerDAO</td>
+                                <td>Ethereum</td>
+                            </tr>
+                            <tr>
+                                <td><span class="asset-icon">🟣</span> MATIC</td>
+                                <td class="apy-cell">12.90%</td>
+                                <td class="rewards-cell">150 coins</td>
+                                <td>QuickSwap</td>
+                                <td>Polygon</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="cta-title">Ready to Start Earning?</h2>
+                <p class="cta-subtitle">Join thousands of users maximizing their DeFi yields</p>
+                <button class="btn btn-primary btn-large" id="connectWallet">Connect Wallet</button>
+                <div class="loading-indicator" id="connectingLoader" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Connecting...</span>
+                </div>
+            </div>
+        </section>
+        
+        <section id="faq" class="faq-section">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>What is DeFi yield farming?</h3>
+                        <p>DeFi yield farming involves lending or staking cryptocurrency assets to earn rewards, typically in the form of additional tokens or interest payments.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How do I get started?</h3>
+                        <p>Simply connect your wallet, choose your preferred assets, and start earning yields from our curated selection of 20+ protocols.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Is my investment safe?</h3>
+                        <p>We only feature audited protocols with strong security track records. However, all DeFi investments carry inherent risks.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What are the fees?</h3>
+                        <p>Our platform charges no additional fees. You only pay the standard protocol fees and blockchain gas costs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>DeFi Portfolio</h4>
+                    <p>Built with ❤️ for the blockchain community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#" aria-label="GitHub">GitHub</a></li>
+                        <li><a href="#" aria-label="Discord">Discord</a></li>
+                        <li><a href="#" aria-label="Twitter">Twitter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" aria-label="Documentation">Docs</a></li>
+                        <li><a href="#" aria-label="Security Audits">Security</a></li>
+                        <li><a href="#" aria-label="Support">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DeFi Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Asset Details -->
+    <div id="assetModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Asset Details</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js setup for rewards visualization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Rewards Chart
+            const rewardsCtx = document.getElementById('rewardsChart').getContext('2d');
+            new Chart(rewardsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['USDC', 'USDT', 'DAI', 'ETH', 'WBTC', 'MATIC'],
+                    datasets: [{
+                        label: 'Rewards (coins)',
+                        data: [100, 85, 95, 50, 20, 150],
+                        backgroundColor: '#8A9A5B',
+                        borderColor: '#6B7A44',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // APY Chart
+            const apyCtx = document.getElementById('apyChart').getContext('2d');
+            new Chart(apyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['USDC', 'USDT', 'DAI', 'ETH', 'WBTC', 'MATIC'],
+                    datasets: [{
+                        label: 'APY (%)',
+                        data: [26.30, 22.15, 24.80, 18.75, 15.40, 12.90],
+                        borderColor: '#8A9A5B',
+                        backgroundColor: 'rgba(138, 154, 91, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: '#444444'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Interactive features
+            const detailButtons = document.querySelectorAll('.btn-details');
+            const modal = document.getElementById('assetModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const closeModal = document.getElementById('closeModal');
+
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const asset = this.getAttribute('data-asset');
+                    showAssetDetails(asset);
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            function showAssetDetails(asset) {
+                const assetData = {
+                    'USDC': {
+                        name: 'USD Coin',
+                        apy: '26.30%',
+                        rewards: '100 coins',
+                        protocol: 'Aave',
+                        details: 'Stable yield from USDC lending on Aave protocol with daily compounding rewards.'
+                    },
+                    'ETH': {
+                        name: 'Ethereum',
+                        apy: '18.75%',
+                        rewards: '50 coins',
+                        protocol: 'Lido',
+                        details: 'Liquid staking rewards from Ethereum 2.0 staking through Lido protocol.'
+                    },
+                    'USDT': {
+                        name: 'Tether',
+                        apy: '22.15%',
+                        rewards: '85 coins',
+                        protocol: 'Compound',
+                        details: 'High-yield lending on Compound protocol with automated reward distribution.'
+                    },
+                    'WBTC': {
+                        name: 'Wrapped Bitcoin',
+                        apy: '15.40%',
+                        rewards: '20 coins',
+                        protocol: 'Curve',
+                        details: 'BTC yield through Curve liquidity provision and CRV reward farming.'
+                    },
+                    'DAI': {
+                        name: 'Dai Stablecoin',
+                        apy: '24.80%',
+                        rewards: '95 coins',
+                        protocol: 'MakerDAO',
+                        details: 'Stable returns from DAI savings rate plus additional MKR governance rewards.'
+                    },
+                    'MATIC': {
+                        name: 'Polygon',
+                        apy: '12.90%',
+                        rewards: '150 coins',
+                        protocol: 'QuickSwap',
+                        details: 'High volume LP rewards on Polygon network with QUICK token incentives.'
+                    }
+                };
+
+                const data = assetData[asset];
+                if (data) {
+                    modalTitle.textContent = `${data.name} (${asset})`;
+                    modalBody.innerHTML = `
+                        <div class="modal-details">
+                            <div class="detail-row">
+                                <strong>APY:</strong> <span class="highlight">${data.apy}</span>
+                            </div>
+                            <div class="detail-row">
+                                <strong>Rewards:</strong> <span class="highlight">${data.rewards}</span>
+                            </div>
+                            <div class="detail-row">
+                                <strong>Protocol:</strong> <span class="highlight">${data.protocol}</span>
+                            </div>
+                            <div class="detail-description">
+                                <strong>Details:</strong> ${data.details}
+                            </div>
+                            <div class="modal-actions">
+                                <button class="btn btn-primary">Start Earning</button>
+                                <button class="btn btn-secondary">Learn More</button>
+                            </div>
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                }
+            }
+
+            // Connect Wallet functionality
+            const connectButton = document.getElementById('connectWallet');
+            const loadingIndicator = document.getElementById('connectingLoader');
+
+            connectButton.addEventListener('click', function() {
+                this.style.display = 'none';
+                loadingIndicator.style.display = 'flex';
+                
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                    this.textContent = 'Wallet Connected ✅';
+                    this.style.display = 'inline-block';
+                    this.disabled = true;
+                    this.classList.add('connected');
+                }, 2500);
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
