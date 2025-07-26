@@ -75,3 +75,5 @@ docker-compose up
 Test on Converge:
 Connect MetaMask to Converge testnet 
 Use explorer: https://explorer-converge-testnet-1.t.conduit.xyz/.
+
+License: MIT
