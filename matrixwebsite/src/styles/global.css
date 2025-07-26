@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Matrix-inspired styling */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background-dark text-matrix-green font-tech;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300FF41' fill-opacity='0.02'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm0 0c0-11.046 8.954-20 20-20s20 8.954 20 20-8.954 20-20 20-20-8.954-20-20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background-darker;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-matrix-green rounded-full;
+    box-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-matrix-bright-green;
+  }
+}
+
+@layer components {
+  /* Matrix Button Styles */
+  .btn-matrix {
+    @apply px-6 py-3 bg-transparent border border-matrix-green text-matrix-green font-matrix font-semibold;
+    @apply hover:bg-matrix-green hover:text-black transition-all duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-matrix-green focus:ring-opacity-50;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-matrix::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-matrix:hover::before {
+    left: 100%;
+  }
+
+  .btn-matrix-primary {
+    @apply btn-matrix bg-matrix-green text-black;
+    @apply hover:bg-matrix-bright-green hover:shadow-lg;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  }
+
+  .btn-matrix-ghost {
+    @apply btn-matrix border-matrix-dark-green text-matrix-dark-green;
+    @apply hover:border-matrix-green hover:text-matrix-green;
+  }
+
+  /* Matrix Card Styles */
+  .card-matrix {
+    @apply bg-background-darker border border-matrix-dark-green rounded-lg p-6;
+    @apply backdrop-blur-matrix;
+    background: rgba(0, 17, 0, 0.8);
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 255, 65, 0.1),
+      0 2px 4px -1px rgba(0, 255, 65, 0.06),
+      inset 0 1px 0 rgba(0, 255, 65, 0.1);
+  }
+
+  .card-matrix-hover {
+    @apply card-matrix transition-all duration-300;
+    @apply hover:border-matrix-green hover:shadow-xl;
+  }
+
+  .card-matrix-hover:hover {
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 255, 65, 0.1),
+      0 10px 10px -5px rgba(0, 255, 65, 0.04),
+      inset 0 1px 0 rgba(0, 255, 65, 0.2);
+    transform: translateY(-2px);
+  }
+
+  /* Matrix Input Styles */
+  .input-matrix {
+    @apply w-full px-4 py-3 bg-transparent border border-matrix-dark-green rounded;
+    @apply text-matrix-green placeholder-matrix-dark-green font-tech;
+    @apply focus:outline-none focus:border-matrix-green focus:ring-1 focus:ring-matrix-green;
+    @apply transition-all duration-300;
+    background: rgba(0, 17, 0, 0.5);
+  }
+
+  .input-matrix:focus {
+    box-shadow: 0 0 0 1px rgba(0, 255, 65, 0.3);
+  }
+
+  /* Matrix Typography */
+  .text-matrix-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .text-matrix-title {
+    @apply font-matrix text-4xl font-bold text-matrix-green;
+    @apply text-matrix-glow;
+    letter-spacing: 2px;
+  }
+
+  .text-matrix-subtitle {
+    @apply font-tech text-xl text-matrix-dark-green;
+    letter-spacing: 1px;
+  }
+
+  /* Matrix Animations */
+  .matrix-flicker {
+    animation: flicker 0.15s infinite linear;
+  }
+
+  @keyframes flicker {
+    0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% {
+      opacity: 1;
+    }
+    20%, 21.9%, 63%, 63.9%, 65%, 69.9% {
+      opacity: 0.4;
+    }
+  }
+
+  .matrix-pulse {
+    animation: matrix-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes matrix-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Matrix Data Streams */
+  .matrix-stream {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .matrix-stream::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00FF41, transparent);
+    animation: stream 2s linear infinite;
+  }
+
+  @keyframes stream {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Matrix Grid Background */
+  .matrix-grid-bg {
+    background-image: 
+      linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Loading Animations */
+  .loading-dots {
+    @apply inline-flex space-x-1;
+  }
+
+  .loading-dots span {
+    @apply w-2 h-2 bg-matrix-green rounded-full;
+    animation: loading-dots 1.4s ease-in-out infinite both;
+  }
+
+  .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+  .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+  @keyframes loading-dots {
+    0%, 80%, 100% {
+      transform: scale(0);
+      opacity: 0.5;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Utility Classes */
+  .glass-effect {
+    backdrop-filter: blur(16px);
+    background: rgba(0, 17, 0, 0.1);
+    border: 1px solid rgba(0, 255, 65, 0.1);
+  }
+
+  .matrix-border {
+    border-image: linear-gradient(45deg, transparent, #00FF41, transparent) 1;
+  }
+
+  .cyberpunk-hover {
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .cyberpunk-hover:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+}
