@@ -1,176 +1,77 @@
-# PolyBets Website - Enhanced DeFi Yield Interface
+## USDe/sUSDe Yield Optimizer Website
+-A comprehensive DeFi platform for optimizing USDe/sUSDe yields on the Converge network. The core feature is an automated yield optimization engine that aggregates opportunities from protocols like Strata, Terminal, and Ethereal, using machine learning for risk-adjusted rebalancing and customizable vaults to deliver enhanced returns.
 
-This is the enhanced version of the PolyBets browser application, featuring a modern, interactive interface for DeFi yield optimization with advanced 3D visualizations and real-time data integration.
+## Overview
+-This website serves as the user interface for the USDe/sUSDe Yield Optimization Engine, an automated vault platform that maximizes risk-adjusted yields on Converge by aggregating opportunities from Strata, Terminal, and Ethereal. It uses ML for portfolio optimization (Sharpe ratio rebalancing), smart contract execution for gas-efficient trades, and customizable vaults to deliver 20-30%+ APY with built-in safeguards, driving TVL growth for Ethena's ecosystem.
+
+## How It Works
+-The engine aggregates real-time yields from Converge protocols, optimizes allocations using ML (Sharpe ratio for risk-return balance), and executes trades via smart contracts with gas efficiency and safeguards (e.g., pause during volatility). Users select vaults, deposit USDe, and the system auto-rebalances for 20-30%+ APY.
+-The engine complements Ethena's delta-neutral yield mechanism by intelligently routing USDe/sUSDe across Converge protocols, providing users with seamless, high-yield strategies in a secure and user-friendly interface.
 
 ## Features
+-Automated Yield Optimization: Real-time monitoring of 50+ USDe/sUSDe opportunities, with APY calculations accounting for rewards, fees, gas, and risks.
+-ML-Powered Rebalancing: Portfolio optimization using Modern Portfolio Theory and Sharpe ratio, with automated triggers for threshold changes (e.g., 2% APY shift).
+-Customizable Vaults: Pre-built types (Conservative, Balanced, Aggressive) and custom options for different risk profiles.
+-Smart Contract Execution: Batched deposits/withdraws, slippage/MEV protection, and emergency pauses for market stress as well as automated pendle PT/YT loops.
+-Frontend Dashboard: Interactive UI with real-time APY, allocation charts (using Recharts), and deposit/withdraw forms.
+-Backend Integration: Flask server for ML (scipy/numpy) and data aggregation from DefiLlama or protocol APIs.
+-Frontend: React, Tailwind CSS, Recharts (charts), ethers.js (wallet/contract interactions).
+-Backend: Python (Flask, numpy, scipy for ML), requests (API fetching).
+-Deployment: Docker for backend, Vercel/Netlify for frontend.
+-Blockchain: Solidity contracts on Converge testnet (USDe as gas token).
 
-### Core Enhancements
-- **3D Interactive Visualizations**: Immersive Three.js components for data visualization
-- **Matrix-Themed UI**: Professional dark theme with green accent colors
-- **Real-Time Data Streams**: Live market data and yield information
-- **Audio Feedback System**: Optional sound effects for user interactions
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
 
-### New Components
+## Data Sources: 
+-DefiLlama API for real APY, filtered for USDe/sUSDe pools.
 
-#### 3D Visualizations
-- `CryptoBackground.tsx` - Animated cryptocurrency particle background
-- `Dashboard3D.tsx` - Interactive 3D dashboard with yield data
-- `HeroScene3D.tsx` - Dynamic 3D hero section animation
-- `NetworkVisualization.tsx` - Real-time network topology visualization
-- `MatrixFinanceLogo.tsx` - Animated 3D logo component
+## Setup Instructions
+Clone the Repo:
+text
 
-#### UI Components
-- `RealTimeDataStream.tsx` - Live streaming market data
-- `KeyMetrics.tsx` - Important yield metrics dashboard
-- `ThemeControls.tsx` - Theme customization controls
-- `MatrixSoundSystem.tsx` - Audio feedback system
+Collapse
 
-#### Enhanced Pages
-- **HomePage**: Interactive hero section with 3D animations
-- **DashboardPage**: Advanced yield analytics with 3D charts
-- **VaultsPage**: New vault management interface
-- **FAQPage**: Improved FAQ with search functionality
-- **LoginPage**: Enhanced authentication interface
+Wrap
 
-### Technical Improvements
-- **TypeScript**: Full type safety throughout the application
-- **Zustand State Management**: Efficient global state management
-- **Three.js Integration**: Advanced 3D graphics capabilities
-- **Performance Optimizations**: Lazy loading and code splitting
-- **Accessibility**: WCAG 2.1 compliance improvements
-
-## Installation
-
-1. Navigate to the website directory:
-```bash
+Copy
+git clone https://github.com/yieldenjoyer/website
 cd website
-```
+Backend Setup (ML and API):
+text
 
-2. Install dependencies:
-```bash
+Collapse
+
+Wrap
+
+Copy
+cd defi-yield-aggregator
+pip install flask numpy scipy requests
+python server.py
+Access API at http://localhost:5000/api/optimize?type=Balanced.
+Frontend Setup (UI):
+text
+
+Collapse
+
+Wrap
+
+Copy
+cd websites
 npm install
-```
+npm start
+Access at http://localhost:3000.
+Smart Contracts (Only for Testnet currently)
+cd contracts
+npx hardhat deploy --network converge_testnet (configure hardhat.config.js with RPC/private key from Ethena form).
+Update YieldEngine.js with deployed contract address.
+Docker for Backend:
+text
 
-3. Start development server:
-```bash
-npm run dev
-```
+Collapse
 
-4. Build for production:
-```bash
-npm run build
-```
+Wrap
 
-5. Preview production build:
-```bash
-npm run preview
-```
-
-## Project Structure
-
-```
-website/
-├── src/
-│   ├── components/
-│   │   ├── three/           # 3D visualization components
-│   │   ├── ui/              # UI components
-│   │   ├── audio/           # Audio system components
-│   │   └── layout/          # Layout components
-│   ├── pages/               # Page components
-│   ├── store/               # Zustand state management
-│   └── styles/              # Global styles
-├── public/                  # Static assets
-├── package.json
-├── vite.config.ts
-├── tailwind.config.ts
-└── tsconfig.json
-```
-
-## Theme System
-
-The application features a sophisticated theme system with:
-- **Matrix Theme**: Dark background with green accents
-- **Professional Color Palette**: Carefully selected colors for optimal UX
-- **Responsive Typography**: Adaptive text sizing across devices
-- **Animation System**: Smooth transitions and hover effects
-
-## Configuration
-
-### Environment Variables
-Create a `.env` file in the website directory:
-```env
-VITE_API_URL=your_api_endpoint
-VITE_ENABLE_AUDIO=true
-VITE_ENABLE_3D=true
-```
-
-### Customization
-- Theme colors can be modified in `tailwind.config.ts`
-- 3D scene parameters are configurable in each component
-- Audio settings can be adjusted in `MatrixSoundSystem.tsx`
-
-## Deployment
-
-### Vercel (Recommended)
-```bash
-npm run build
-# Deploy the dist/ folder to Vercel
-```
-
-### Netlify
-```bash
-npm run build
-# Deploy the dist/ folder to Netlify
-```
-
-### Self-Hosted
-```bash
-npm run build
-# Serve the dist/ folder with any static file server
-```
-
-## Browser Compatibility
-
-- **Chrome/Edge**: Full support (recommended)
-- **Firefox**: Full support
-- **Safari**: Partial 3D support (some features may be limited)
-- **Mobile**: Responsive design with optimized 3D performance
-
-## Performance
-
-The application is optimized for performance with:
-- **Code Splitting**: Lazy loading of 3D components
-- **Asset Optimization**: Compressed textures and models
-- **Bundle Size**: < 2MB total bundle size
-- **Loading Speed**: < 3s initial load time
-
-## Testing
-
-Run tests with:
-```bash
-npm run test
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-This project is part of the PolyBets monorepo and follows the same licensing terms.
-
-## Support
-
-For issues or questions:
-1. Check the FAQ section in the application
-2. Review the IMPROVEMENTS_SUMMARY.md file
-3. Create an issue in the main repository
-
----
-
-**Note**: This enhanced version includes cutting-edge web technologies and may require modern browsers for optimal performance. The 3D features can be disabled for better compatibility with older devices.
+Copy
+docker-compose up
+Test on Converge:
+Connect MetaMask to Converge testnet 
+Use explorer: https://explorer-converge-testnet-1.t.conduit.xyz/.
