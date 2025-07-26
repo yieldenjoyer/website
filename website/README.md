@@ -1,4 +1,4 @@
-# PolyBets Website - Enhanced DeFi Yield Interface
+# Enhanced DeFi Yield Interface
 
 This is the enhanced version of the PolyBets browser application, featuring a modern, interactive interface for DeFi yield optimization with advanced 3D visualizations and real-time data integration.
 
