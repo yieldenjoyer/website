@@ -3,107 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeFi Yield Portfolio - Explore 20+ Protocols</title>
+    <title>DeFi Yield Portfolio - Explore 20+ Protocols | Maximize Returns</title>
+    <meta name="description" content="Discover the best DeFi yields from 20+ protocols. Compare APY rates, track rewards, and optimize your crypto portfolio with our comprehensive yield aggregation platform.">
+    <meta name="keywords" content="DeFi, yield farming, crypto portfolio, APY, staking, liquidity mining, blockchain">
+    <meta property="og:title" content="DeFi Yield Portfolio - Maximize Your Crypto Returns">
+    <meta property="og:description" content="Explore yields from 20+ DeFi protocols. Find the best APY rates for USDC, ETH, WBTC and more.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js" as="script">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Progressive Web App -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8A9A5B">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Fonts optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="sticky-header">
-        <nav class="container">
+    <header class="navbar">
+        <nav class="nav-container">
             <div class="nav-brand">
-                <h1 class="logo">DeFi Portfolio</h1>
+                <h1 class="logo">Yield Enjoyer</h1>
             </div>
-            <ul class="nav-links">
-                <li><a href="crypto-example.html" class="active">Home</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="pools.html">Pools</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
+            <div class="nav-links">
+                <a href="crypto-example.html" class="nav-link active">Home</a>
+                <a href="#yields" class="nav-link">Yields</a>
+                <a href="#portfolio" class="nav-link">Portfolio</a>
+                <a href="#rewards" class="nav-link">Rewards</a>
+                <button class="btn btn-primary">Connect Wallet</button>
+            </div>
         </nav>
     </header>
 
     <main>
         <section id="home" class="hero">
             <div class="container">
-                <h1 class="hero-title">Explore the Best Yields from 20+ Protocols</h1>
-                <p class="hero-subtitle">Maximize your DeFi returns with our comprehensive yield aggregation platform</p>
-                <a href="#yields" class="btn btn-primary">Explore Yields</a>
+                <h1 class="hero-title">Maximize Your USDe Yields</h1>
+                <p class="hero-subtitle">Automate yield optimization across Strata, Terminal, and Ethereal protocols on Converge network. Advanced ML algorithms for maximum returns.</p>
+                <a href="#yields" class="btn btn-primary btn-large">Get Started</a>
+            </div>
+        </section>
+
+        <section class="optimizer-engine-section">
+            <div class="container">
+                <div class="engine-header">
+                    <h2 class="section-title">USDe/sUSDe Yield Optimization Engine</h2>
+                    <p class="engine-subtitle">Advanced AI-powered vaults for maximum USDe yields on Converge Network</p>
+                </div>
+
+                <!-- Vault Selection -->
+                <div class="vault-selection">
+                    <h3 class="subsection-title">Select Your Vault Strategy</h3>
+                    <div class="vault-grid">
+                        <div class="vault-card active" data-vault="conservative">
+                            <div class="vault-header">
+                                <span class="vault-icon">🛡️</span>
+                                <h4>Conservative</h4>
+                                <span class="vault-apy">18.5% APY</span>
+                            </div>
+                            <div class="vault-body">
+                                <p>Low-risk sUSDe staking with minimal leverage</p>
+                                <div class="vault-allocation">
+                                    <div class="allocation-item">
+                                        <span>sUSDe Staking</span>
+                                        <span>90%</span>
+                                    </div>
+                                    <div class="allocation-item">
+                                        <span>Strata Leverage</span>
+                                        <span>10%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vault-card featured" data-vault="balanced">
+                            <div class="vault-header">
+                                <span class="vault-icon">⚖️</span>
+                                <h4>Balanced</h4>
+                                <span class="vault-apy">26.3% APY</span>
+                                <span class="recommended-badge">Recommended</span>
+                            </div>
+                            <div class="vault-body">
+                                <p>Optimal risk-reward with diversified strategies</p>
+                                <div class="vault-allocation">
+                                    <div class="allocation-item">
+                                        <span>sUSDe Core</span>
+                                        <span>40%</span>
+                                    </div>
+                                    <div class="allocation-item">
+                                        <span>Strata Leverage</span>
+                                        <span>35%</span>
+                                    </div>
+                                    <div class="allocation-item">
+                                        <span>Ethereal Perps</span>
+                                        <span>25%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vault-card" data-vault="aggressive">
+                            <div class="vault-header">
+                                <span class="vault-icon">🚀</span>
+                                <h4>Aggressive</h4>
+                                <span class="vault-apy">34.7% APY</span>
+                            </div>
+                            <div class="vault-body">
+                                <p>Maximum yield with higher leverage strategies</p>
+                                <div class="vault-allocation">
+                                    <div class="allocation-item">
+                                        <span>Leveraged Farming</span>
+                                        <span>60%</span>
+                                    </div>
+                                    <div class="allocation-item">
+                                        <span>High-Yield Strategies</span>
+                                        <span>40%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Dashboard -->
+                <div class="engine-dashboard">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card current-apy">
+                            <h4>Current APY</h4>
+                            <div class="apy-display">
+                                <span class="apy-value" id="currentAPY">26.3%</span>
+                                <span class="apy-change positive">+2.1%</span>
+                            </div>
+                            <p class="apy-description">Risk-adjusted yield with ML optimization</p>
+                        </div>
+
+                        <div class="dashboard-card total-deposits">
+                            <h4>Total Deposits</h4>
+                            <div class="deposits-display">
+                                <span class="deposits-value">$2.4M</span>
+                                <span class="deposits-currency">USDe</span>
+                            </div>
+                            <p class="deposits-description">Across all vault strategies</p>
+                        </div>
+
+                        <div class="dashboard-card yield-earned">
+                            <h4>24h Yield Earned</h4>
+                            <div class="yield-display">
+                                <span class="yield-value">$1,847</span>
+                                <span class="yield-percentage">+0.08%</span>
+                            </div>
+                            <p class="yield-description">Auto-compounded rewards</p>
+                        </div>
+
+                        <div class="dashboard-card next-rebalance">
+                            <h4>Next Rebalance</h4>
+                            <div class="rebalance-display">
+                                <span class="rebalance-time">2h 34m</span>
+                                <span class="rebalance-status">Scheduled</span>
+                            </div>
+                            <p class="rebalance-description">Low-latency optimization</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategy Allocation Chart -->
+                <div class="allocation-visualization">
+                    <h3 class="subsection-title">Current Strategy Allocation</h3>
+                    <div class="chart-container">
+                        <canvas id="allocationChart" width="400" height="400"></canvas>
+                        <div class="allocation-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #10b981;"></span>
+                                <span>sUSDe Core (40%)</span>
+                                <span class="legend-apy">24.5% APY</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #3b82f6;"></span>
+                                <span>Strata Leverage (35%)</span>
+                                <span class="legend-apy">28.2% APY</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #8b5cf6;"></span>
+                                <span>Ethereal Perps (25%)</span>
+                                <span class="legend-apy">31.8% APY</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deposit/Withdraw Interface -->
+                <div class="vault-interface">
+                    <div class="interface-tabs">
+                        <button class="tab-button active" data-tab="deposit">Deposit</button>
+                        <button class="tab-button" data-tab="withdraw">Withdraw</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="deposit-tab">
+                        <div class="input-group">
+                            <label>Amount (USDe)</label>
+                            <input type="number" id="depositAmount" placeholder="0.00" class="amount-input">
+                            <button class="max-button">MAX</button>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="detail-row">
+                                <span>Estimated APY</span>
+                                <span class="highlight">26.3%</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Expected Daily Yield</span>
+                                <span>$0.72 per $1000</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Network Fee</span>
+                                <span>~$0.50</span>
+                            </div>
+                        </div>
+                        <button class="action-button primary" id="depositButton">
+                            <span class="button-text">Deposit USDe</span>
+                            <span class="button-icon">🚀</span>
+                        </button>
+                    </div>
+
+                    <div class="tab-content" id="withdraw-tab">
+                        <div class="input-group">
+                            <label>Amount (Vault Tokens)</label>
+                            <input type="number" id="withdrawAmount" placeholder="0.00" class="amount-input">
+                            <button class="max-button">MAX</button>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="detail-row">
+                                <span>You'll Receive</span>
+                                <span class="highlight">~0.00 USDe</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Withdrawal Fee</span>
+                                <span>0.1%</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Processing Time</span>
+                                <span>~5 minutes</span>
+                            </div>
+                        </div>
+                        <button class="action-button secondary" id="withdrawButton">
+                            <span class="button-text">Withdraw</span>
+                            <span class="button-icon">📤</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <div class="strategy-grid">
+                    <div class="yield-card text-center">
+                        <div class="card-header justify-center">
+                            <span class="asset-icon">📊</span>
+                            <h3 class="asset-name">Real-Time APY</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-secondary">Monitor 20+ protocols instantly with live data feeds and automated rebalancing.</p>
+                        </div>
+                    </div>
+                    <div class="yield-card text-center">
+                        <div class="card-header justify-center">
+                            <span class="asset-icon">🤖</span>
+                            <h3 class="asset-name">ML Optimization</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-secondary">AI-powered algorithms automatically optimize your USDe positions for maximum yield.</p>
+                        </div>
+                    </div>
+                    <div class="yield-card text-center">
+                        <div class="card-header justify-center">
+                            <span class="asset-icon">🔒</span>
+                            <h3 class="asset-name">Secure Vaults</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-secondary">Multi-audited smart contracts with insurance coverage and emergency controls.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="yields" class="yields-section">
             <div class="container">
-                <h2 class="section-title">Stablecoin Yields</h2>
+                <h2 class="section-title">USDe & sUSDe Optimization Strategies</h2>
                 <div class="strategy-grid">
-                    <div class="yield-card">
+                    <div class="yield-card featured">
                         <div class="card-header">
-                            <span class="asset-icon">💰</span>
-                            <h3 class="asset-name">USDC</h3>
+                            <span class="asset-icon">🏅</span>
+                            <h3 class="asset-name">USDe</h3>
+                            <span class="featured-badge">Best APY</span>
                         </div>
                         <div class="card-body">
                             <div class="yield-info">
                                 <span class="apy-label">APY</span>
-                                <span class="apy-value">26.30%</span>
+                                <span class="apy-value">28.5%</span>
                             </div>
                             <div class="rewards-info">
-                                <span class="rewards-label">Rewards</span>
-                                <span class="rewards-value">100 coins</span>
+                                <span class="rewards-label">Protocol</span>
+                                <span class="rewards-value">Ethena</span>
                             </div>
                             <div class="protocol-info">
-                                <span class="protocol-label">Protocol</span>
-                                <span class="protocol-value">Aave</span>
+                                <span class="protocol-label">Chain</span>
+                                <span class="protocol-value">Converge</span>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-details" data-asset="USDC">View Details</button>
+                            <button class="btn btn-details" data-asset="USDe">Optimize Now</button>
                         </div>
                     </div>
 
                     <div class="yield-card">
                         <div class="card-header">
                             <span class="asset-icon">💎</span>
-                            <h3 class="asset-name">USDT</h3>
+                            <h3 class="asset-name">sUSDe</h3>
                         </div>
                         <div class="card-body">
                             <div class="yield-info">
                                 <span class="apy-label">APY</span>
-                                <span class="apy-value">22.15%</span>
+                                <span class="apy-value">32.4%</span>
                             </div>
                             <div class="rewards-info">
-                                <span class="rewards-label">Rewards</span>
-                                <span class="rewards-value">85 coins</span>
+                                <span class="rewards-label">Protocol</span>
+                                <span class="rewards-value">Strata</span>
                             </div>
                             <div class="protocol-info">
-                                <span class="protocol-label">Protocol</span>
-                                <span class="protocol-value">Compound</span>
+                                <span class="protocol-label">Chain</span>
+                                <span class="protocol-value">Converge</span>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-details" data-asset="USDT">View Details</button>
+                            <button class="btn btn-details" data-asset="sUSDe">Stake Now</button>
                         </div>
                     </div>
 
                     <div class="yield-card">
                         <div class="card-header">
-                            <span class="asset-icon">🪙</span>
-                            <h3 class="asset-name">DAI</h3>
+                            <span class="asset-icon">🔄</span>
+                            <h3 class="asset-name">Auto-Loop</h3>
                         </div>
                         <div class="card-body">
                             <div class="yield-info">
                                 <span class="apy-label">APY</span>
-                                <span class="apy-value">24.80%</span>
+                                <span class="apy-value">35.2%</span>
                             </div>
                             <div class="rewards-info">
-                                <span class="rewards-label">Rewards</span>
-                                <span class="rewards-value">95 coins</span>
+                                <span class="rewards-label">Protocol</span>
+                                <span class="rewards-value">Terminal</span>
                             </div>
                             <div class="protocol-info">
-                                <span class="protocol-label">Protocol</span>
-                                <span class="protocol-value">MakerDAO</span>
+                                <span class="protocol-label">Chain</span>
+                                <span class="protocol-value">Converge</span>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-details" data-asset="DAI">View Details</button>
+                            <button class="btn btn-details" data-asset="Loop">Deploy Strategy</button>
                         </div>
                     </div>
                 </div>
@@ -302,28 +565,29 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>DeFi Portfolio</h4>
-                    <p>Built with ❤️ for the blockchain community</p>
+                    <h4>Yield Enjoyer</h4>
+                    <p>Powered by Converge Network - Advanced ML algorithms for USDe yield optimization</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Links</h4>
+                    <h4>Community</h4>
                     <ul>
-                        <li><a href="#" aria-label="GitHub">GitHub</a></li>
-                        <li><a href="#" aria-label="Discord">Discord</a></li>
-                        <li><a href="#" aria-label="Twitter">Twitter</a></li>
+                        <li><a href="https://telegram.me/yield_enjoyer" aria-label="Telegram">📱 Telegram</a></li>
+                        <li><a href="https://twitter.com/yield_enjoyer" aria-label="Twitter">🐦 Twitter</a></li>
+                        <li><a href="https://discord.gg/yield_enjoyer" aria-label="Discord">💬 Discord</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="#" aria-label="Documentation">Docs</a></li>
-                        <li><a href="#" aria-label="Security Audits">Security</a></li>
-                        <li><a href="#" aria-label="Support">Support</a></li>
+                        <li><a href="#" aria-label="Documentation">📚 Documentation</a></li>
+                        <li><a href="#" aria-label="Security Audits">🔒 Security Audits</a></li>
+                        <li><a href="#" aria-label="API">⚡ API Access</a></li>
+                        <li><a href="#" aria-label="Support">🎧 Support</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 DeFi Portfolio. All rights reserved.</p>
+                <p>&copy; 2025 Yield Enjoyer | Powered by Converge Network</p>
             </div>
         </div>
     </footer>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDe/sUSDe Yield Optimization Engine - Maximize Your Returns | Converge Network</title>
+    <meta name="description" content="Advanced AI-powered USDe and sUSDe yield optimization engine. Maximize returns across Strata, Terminal, and Ethereal protocols on Converge Network with ML algorithms.">
+    <meta name="keywords" content="USDe, sUSDe, yield optimization, Ethena, Converge Network, DeFi, staking, ML algorithms">
+    <meta property="og:title" content="USDe/sUSDe Yield Optimization Engine - Converge Network">
+    <meta property="og:description" content="Advanced AI-powered yield optimization for USDe and sUSDe tokens. Professional vaults with up to 34.7% APY.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js" as="script">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Progressive Web App -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Fonts optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <div class="logo-container">
+                    <i class="fas fa-coins logo-icon"></i>
+                    <h1 class="logo">USDe Optimizer</h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="crypto-example.html" class="nav-link">Home</a>
+                <a href="usde-optimizer.html" class="nav-link active">Optimizer</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#docs" class="nav-link">Docs</a>
+                <div class="wallet-section">
+                    <div class="wallet-balance" id="walletBalanceDisplay" style="display: none;">
+                        <span class="balance-amount">1,000.00 USDe</span>
+                        <i class="fas fa-chevron-down balance-dropdown"></i>
+                    </div>
+                    <button class="btn btn-primary connect-wallet-btn" id="connectWalletNav">Connect Wallet</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">USDe/sUSDe Yield Optimization Engine</h1>
+                <p class="hero-subtitle">Advanced AI-powered vaults for maximum USDe yields on Converge Network. Automated rebalancing across Strata, Terminal, and Ethereal protocols with machine learning algorithms.</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">$2.4M+</span>
+                        <span class="stat-label">Total Deposits</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">34.7%</span>
+                        <span class="stat-label">Max APY</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">850+</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vault Selection Section -->
+        <section class="vault-selection-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Select Your Vault Strategy</h2>
+                    <p class="section-subtitle">Choose the optimal risk-reward profile for your USDe holdings</p>
+                </div>
+
+                <div class="vault-grid">
+                    <div class="vault-card" data-vault="conservative">
+                        <div class="vault-header">
+                            <div class="vault-icon-container">
+                                <i class="fas fa-shield-alt vault-icon-bg"></i>
+                                <span class="vault-icon">🛡️</span>
+                            </div>
+                            <div class="vault-info">
+                                <h3>Conservative Vault</h3>
+                                <span class="vault-apy">18.5% APY</span>
+                            </div>
+                            <div class="risk-indicator low">Low Risk</div>
+                        </div>
+                        <div class="vault-body">
+                            <p class="vault-description">Stable returns with minimal risk through sUSDe staking and conservative leverage strategies.</p>
+                            
+                            <div class="vault-features">
+                                <div class="feature-item">
+                                    <span class="feature-icon">✅</span>
+                                    <span>Principal protection focused</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">✅</span>
+                                    <span>Daily compounding</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">✅</span>
+                                    <span>Instant withdrawals</span>
+                                </div>
+                            </div>
+
+                            <div class="vault-allocation">
+                                <h4>Strategy Allocation</h4>
+                                <div class="allocation-item">
+                                    <span>sUSDe Staking</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="allocation-item">
+                                    <span>Strata Leverage</span>
+                                    <span>10%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vault-footer">
+                            <button class="btn btn-secondary vault-select-btn">Select Strategy</button>
+                        </div>
+                    </div>
+
+                    <div class="vault-card featured" data-vault="balanced">
+                        <div class="vault-header">
+                            <span class="vault-icon">⚖️</span>
+                            <div class="vault-info">
+                                <h3>Balanced Vault</h3>
+                                <span class="vault-apy">26.3% APY</span>
+                            </div>
+                            <div class="risk-indicator medium">Medium Risk</div>
+                            <span class="recommended-badge">Recommended</span>
+                        </div>
+                        <div class="vault-body">
+                            <p class="vault-description">Optimal risk-reward balance with diversified strategies across multiple protocols.</p>
+                            
+                            <div class="vault-features">
+                                <div class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-brain text-purple-400"></i></span>
+                                    <span>ML-optimized allocation</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-sync text-blue-400"></i></span>
+                                    <span>Auto-rebalancing</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-network-wired text-green-400"></i></span>
+                                    <span>Multi-protocol exposure</span>
+                                </div>
+                            </div>
+
+                            <div class="vault-allocation">
+                                <h4>Strategy Allocation</h4>
+                                <div class="allocation-item">
+                                    <span>sUSDe Core</span>
+                                    <span>40%</span>
+                                </div>
+                                <div class="allocation-item">
+                                    <span>Strata Leverage</span>
+                                    <span>35%</span>
+                                </div>
+                                <div class="allocation-item">
+                                    <span>Ethereal Perps</span>
+                                    <span>25%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vault-footer">
+                            <button class="btn btn-primary vault-select-btn">Select Strategy</button>
+                        </div>
+                    </div>
+
+                    <div class="vault-card" data-vault="aggressive">
+                        <div class="vault-header">
+                            <span class="vault-icon">🚀</span>
+                            <div class="vault-info">
+                                <h3>Aggressive Vault</h3>
+                                <span class="vault-apy">34.7% APY</span>
+                            </div>
+                            <div class="risk-indicator high">High Risk</div>
+                        </div>
+                        <div class="vault-body">
+                            <p class="vault-description">Maximum yield potential through advanced leverage strategies and high-yield protocols.</p>
+                            
+                            <div class="vault-features">
+                                <div class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-bolt text-yellow-400"></i></span>
+                                    <span>Maximum leverage</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-fire text-red-400"></i></span>
+                                    <span>High-yield farming</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-chart-line text-purple-400"></i></span>
+                                    <span>Higher volatility</span>
+                                </div>
+                            </div>
+
+                            <div class="vault-allocation">
+                                <h4>Strategy Allocation</h4>
+                                <div class="allocation-item">
+                                    <span>Leveraged Farming</span>
+                                    <span>60%</span>
+                                </div>
+                                <div class="allocation-item">
+                                    <span>High-Yield Strategies</span>
+                                    <span>40%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vault-footer">
+                            <button class="btn btn-secondary vault-select-btn">Select Strategy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Dashboard Section -->
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Live Performance Dashboard</h2>
+                    <p class="section-subtitle">Real-time metrics and optimization insights</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card current-performance">
+                        <div class="card-header">
+                            <h3>Current Performance</h3>
+                            <span class="update-indicator">Live</span>
+                        </div>
+                        <div class="metric-display">
+                            <span class="metric-value" id="currentAPY">26.3%</span>
+                            <span class="metric-change positive">+2.1%</span>
+                        </div>
+                        <p class="metric-description">Risk-adjusted APY with ML optimization</p>
+                        <div class="metric-details">
+                            <div class="detail-item">
+                                <span>Base Yield</span>
+                                <span>22.8%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Optimization Boost</span>
+                                <span>+3.5%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card total-deposits">
+                        <div class="card-header">
+                            <h3>Total Value Locked</h3>
+                            <span class="chain-indicator">Converge</span>
+                        </div>
+                        <div class="metric-display">
+                            <span class="metric-value">$2.4M</span>
+                            <span class="metric-currency">USDe</span>
+                        </div>
+                        <p class="metric-description">Across all vault strategies</p>
+                        <div class="metric-details">
+                            <div class="detail-item">
+                                <span>24h Volume</span>
+                                <span>$187K</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Active Deposits</span>
+                                <span>850</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card yield-earned">
+                        <div class="card-header">
+                            <h3>24h Yield Generated</h3>
+                            <span class="time-indicator">Last 24h</span>
+                        </div>
+                        <div class="metric-display">
+                            <span class="metric-value">$1,847</span>
+                            <span class="metric-percentage">+0.08%</span>
+                        </div>
+                        <p class="metric-description">Auto-compounded rewards</p>
+                        <div class="metric-details">
+                            <div class="detail-item">
+                                <span>Conservative</span>
+                                <span>$651</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Balanced</span>
+                                <span>$894</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Aggressive</span>
+                                <span>$302</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card next-rebalance">
+                        <div class="card-header">
+                            <h3>Next Rebalance</h3>
+                            <span class="status-indicator active">Scheduled</span>
+                        </div>
+                        <div class="metric-display">
+                            <span class="metric-value">2h 34m</span>
+                            <span class="metric-status">Pending</span>
+                        </div>
+                        <p class="metric-description">Low-latency optimization on Converge</p>
+                        <div class="metric-details">
+                            <div class="detail-item">
+                                <span>Gas Cost</span>
+                                <span>~$0.12</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Expected Boost</span>
+                                <span>+0.3%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategy Allocation Visualization -->
+        <section class="allocation-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Current Strategy Allocation</h2>
+                    <p class="section-subtitle">Dynamic allocation based on market conditions and ML predictions</p>
+                </div>
+
+                <div class="allocation-container">
+                    <div class="chart-wrapper">
+                        <canvas id="allocationChart" width="400" height="400"></canvas>
+                        <div class="chart-center-info">
+                            <span class="total-apy">26.3%</span>
+                            <span class="total-label">Weighted APY</span>
+                        </div>
+                    </div>
+                    
+                    <div class="allocation-legend-wrapper">
+                        <div class="allocation-legend">
+                            <div class="legend-item">
+                                <div class="legend-indicator">
+                                    <span class="legend-color" style="background-color: #10b981;"></span>
+                                    <span class="legend-percentage">40%</span>
+                                </div>
+                                <div class="legend-content">
+                                    <span class="legend-name">sUSDe Core</span>
+                                    <span class="legend-apy">24.5% APY</span>
+                                    <span class="legend-description">Base staking rewards from Ethena protocol</span>
+                                </div>
+                            </div>
+                            
+                            <div class="legend-item">
+                                <div class="legend-indicator">
+                                    <span class="legend-color" style="background-color: #3b82f6;"></span>
+                                    <span class="legend-percentage">35%</span>
+                                </div>
+                                <div class="legend-content">
+                                    <span class="legend-name">Strata Leverage</span>
+                                    <span class="legend-apy">28.2% APY</span>
+                                    <span class="legend-description">Leveraged positions on Strata protocol</span>
+                                </div>
+                            </div>
+                            
+                            <div class="legend-item">
+                                <div class="legend-indicator">
+                                    <span class="legend-color" style="background-color: #8b5cf6;"></span>
+                                    <span class="legend-percentage">25%</span>
+                                </div>
+                                <div class="legend-content">
+                                    <span class="legend-name">Ethereal Perps</span>
+                                    <span class="legend-apy">31.8% APY</span>
+                                    <span class="legend-description">Perpetual futures strategies</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rebalance-info">
+                            <h4>Next Rebalancing</h4>
+                            <p>Based on ML analysis, next rebalance will likely:</p>
+                            <ul>
+                                <li>↗️ Increase Ethereal allocation by 5%</li>
+                                <li>↘️ Reduce sUSDe Core by 3%</li>
+                                <li>→ Maintain Strata position</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deposit/Withdraw Interface -->
+        <section class="interface-section">
+            <div class="container">
+                <div class="interface-wrapper">
+                    <div class="interface-header">
+                        <h2>Deposit & Withdraw</h2>
+                        <div class="wallet-status">
+                            <span class="wallet-indicator" id="walletStatus">Not Connected</span>
+                            <button class="btn btn-primary" id="connectWalletMain">Connect Wallet</button>
+                        </div>
+                    </div>
+
+                    <div class="interface-tabs">
+                        <button class="tab-button active" data-tab="deposit">
+                            <span class="tab-icon">📥</span>
+                            Deposit
+                        </button>
+                        <button class="tab-button" data-tab="withdraw">
+                            <span class="tab-icon">📤</span>
+                            Withdraw
+                        </button>
+                    </div>
+                    
+                    <div class="tab-content active" id="deposit-tab">
+                        <div class="input-section">
+                            <div class="input-group">
+                                <label>Deposit Amount</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="depositAmount" placeholder="0.00" class="amount-input">
+                                    <span class="input-currency">USDe</span>
+                                    <button class="max-button">MAX</button>
+                                </div>
+                                <div class="balance-info">
+                                    <span>Balance: <span id="usdeBalance">0.00 USDe</span></span>
+                                </div>
+                            </div>
+
+                            <div class="vault-selector">
+                                <label>Select Vault</label>
+                                <div class="vault-options">
+                                    <div class="vault-option" data-vault="conservative">
+                                        <input type="radio" name="vault" value="conservative" id="vault-conservative">
+                                        <label for="vault-conservative">
+                                            <span class="vault-name">Conservative</span>
+                                            <span class="vault-apy">18.5% APY</span>
+                                        </label>
+                                    </div>
+                                    <div class="vault-option featured" data-vault="balanced">
+                                        <input type="radio" name="vault" value="balanced" id="vault-balanced" checked>
+                                        <label for="vault-balanced">
+                                            <span class="vault-name">Balanced</span>
+                                            <span class="vault-apy">26.3% APY</span>
+                                            <span class="recommended-tag">Recommended</span>
+                                        </label>
+                                    </div>
+                                    <div class="vault-option" data-vault="aggressive">
+                                        <input type="radio" name="vault" value="aggressive" id="vault-aggressive">
+                                        <label for="vault-aggressive">
+                                            <span class="vault-name">Aggressive</span>
+                                            <span class="vault-apy">34.7% APY</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-summary">
+                            <h3>Transaction Summary</h3>
+                            <div class="summary-grid">
+                                <div class="summary-row">
+                                    <span>Deposit Amount</span>
+                                    <span class="summary-value" id="summaryAmount">0.00 USDe</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Selected Strategy</span>
+                                    <span class="summary-value" id="summaryVault">Balanced</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Estimated APY</span>
+                                    <span class="summary-value highlight" id="summaryAPY">26.3%</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Expected Daily Yield</span>
+                                    <span class="summary-value" id="summaryDaily">$0.00</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Network Fee</span>
+                                    <span class="summary-value">~$0.50</span>
+                                </div>
+                                <div class="summary-divider"></div>
+                                <div class="summary-row total">
+                                    <span>You'll Receive</span>
+                                    <span class="summary-value" id="summaryReceive">0.00 Vault Tokens</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="action-button primary" id="depositButton" disabled>
+                            <span class="button-text">Deposit USDe</span>
+                            <span class="button-icon">🚀</span>
+                        </button>
+                    </div>
+
+                    <div class="tab-content" id="withdraw-tab">
+                        <div class="input-section">
+                            <div class="input-group">
+                                <label>Withdraw Amount</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="withdrawAmount" placeholder="0.00" class="amount-input">
+                                    <span class="input-currency">Vault Tokens</span>
+                                    <button class="max-button">MAX</button>
+                                </div>
+                                <div class="balance-info">
+                                    <span>Balance: <span id="vaultBalance">0.00 Vault Tokens</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-summary">
+                            <h3>Withdraw Summary</h3>
+                            <div class="summary-grid">
+                                <div class="summary-row">
+                                    <span>Vault Tokens</span>
+                                    <span class="summary-value" id="withdrawTokens">0.00</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>You'll Receive</span>
+                                    <span class="summary-value highlight" id="withdrawReceive">~0.00 USDe</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Withdrawal Fee</span>
+                                    <span class="summary-value">0.1%</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Processing Time</span>
+                                    <span class="summary-value">~5 minutes</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Network Fee</span>
+                                    <span class="summary-value">~$0.25</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="action-button secondary" id="withdrawButton" disabled>
+                            <span class="button-text">Withdraw</span>
+                            <span class="button-icon">📤</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose Our USDe Optimizer?</h2>
+                    <p class="section-subtitle">Advanced features powered by Converge Network's infrastructure</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>ML-Powered Optimization</h3>
+                        <p>Advanced machine learning algorithms continuously analyze market conditions and optimize your allocation across 20+ protocols for maximum yield.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Low-Latency Rebalancing</h3>
+                        <p>Converge Network's infrastructure enables sub-second rebalancing with minimal gas costs, ensuring optimal positioning at all times.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Multi-Audited Security</h3>
+                        <p>Smart contracts audited by leading security firms with insurance coverage and emergency controls for maximum safety.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Real-Time Analytics</h3>
+                        <p>Comprehensive dashboard with live performance metrics, allocation breakdowns, and predictive insights for informed decisions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <h3>Multi-Protocol Integration</h3>
+                        <p>Seamless integration with Strata, Terminal, Ethereal, and other leading protocols in the Ethena ecosystem.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💎</div>
+                        <h3>Institutional Grade</h3>
+                        <p>Professional-grade infrastructure trusted by institutions, with enterprise-level support and compliance features.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>USDe Optimizer</h4>
+                    <p>Powered by Converge Network - Advanced ML algorithms for USDe yield optimization across the Ethena ecosystem.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://telegram.me/usde_optimizer" aria-label="Telegram">📱 Telegram</a></li>
+                        <li><a href="https://twitter.com/usde_optimizer" aria-label="Twitter">🐦 Twitter</a></li>
+                        <li><a href="https://discord.gg/usde_optimizer" aria-label="Discord">💬 Discord</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" aria-label="Documentation">📚 Documentation</a></li>
+                        <li><a href="#" aria-label="Security Audits">🔒 Security Audits</a></li>
+                        <li><a href="#" aria-label="API">⚡ API Access</a></li>
+                        <li><a href="#" aria-label="Support">🎧 Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 USDe Optimizer | Powered by Converge Network | Built for the Ethena Ecosystem</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Chart.js for allocation visualization
+            const ctx = document.getElementById('allocationChart').getContext('2d');
+            const allocationChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['sUSDe Core', 'Strata Leverage', 'Ethereal Perps'],
+                    datasets: [{
+                        data: [40, 35, 25],
+                        backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6'],
+                        borderWidth: 0,
+                        cutout: '70%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    
+                    // Remove active class from all tabs and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to current tab and content
+                    this.classList.add('active');
+                    document.getElementById(tab + '-tab').classList.add('active');
+                });
+            });
+
+            // Vault selection functionality
+            const vaultSelectButtons = document.querySelectorAll('.vault-select-btn');
+            const vaultOptions = document.querySelectorAll('.vault-option');
+
+            vaultSelectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const vault = this.closest('.vault-card').dataset.vault;
+                    
+                    // Update UI to show selected vault
+                    document.querySelectorAll('.vault-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    this.closest('.vault-card').classList.add('selected');
+                    
+                    // Update deposit form
+                    const vaultRadio = document.getElementById('vault-' + vault);
+                    if (vaultRadio) {
+                        vaultRadio.checked = true;
+                        updateTransactionSummary();
+                    }
+                });
+            });
+
+            // Form inputs
+            const depositAmountInput = document.getElementById('depositAmount');
+            const withdrawAmountInput = document.getElementById('withdrawAmount');
+
+            if (depositAmountInput) {
+                depositAmountInput.addEventListener('input', updateTransactionSummary);
+            }
+
+            if (withdrawAmountInput) {
+                withdrawAmountInput.addEventListener('input', updateWithdrawSummary);
+            }
+
+            // Vault selection radio buttons
+            vaultOptions.forEach(option => {
+                const radio = option.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.addEventListener('change', updateTransactionSummary);
+                }
+            });
+
+            // Connect wallet functionality
+            const connectButtons = document.querySelectorAll('#connectWalletNav, #connectWalletMain');
+            connectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.textContent = 'Connecting...';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.textContent = 'Connected ✅';
+                        this.classList.add('connected');
+                        
+                        // Update wallet status
+                        const walletStatus = document.getElementById('walletStatus');
+                        if (walletStatus) {
+                            walletStatus.textContent = 'Connected';
+                            walletStatus.style.color = 'var(--accent-green)';
+                        }
+                        
+                        // Enable action buttons
+                        document.getElementById('depositButton').disabled = false;
+                        document.getElementById('withdrawButton').disabled = false;
+                        
+                        // Update balances (mock data)
+                        document.getElementById('usdeBalance').textContent = '1,000.00 USDe';
+                        document.getElementById('vaultBalance').textContent = '850.00 Vault Tokens';
+                    }, 2000);
+                });
+            });
+
+            // MAX button functionality
+            document.querySelectorAll('.max-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.parentNode.querySelector('.amount-input');
+                    if (input.id === 'depositAmount') {
+                        input.value = '1000.00';
+                    } else if (input.id === 'withdrawAmount') {
+                        input.value = '850.00';
+                    }
+                    
+                    if (input.id === 'depositAmount') {
+                        updateTransactionSummary();
+                    } else {
+                        updateWithdrawSummary();
+                    }
+                });
+            });
+
+            function updateTransactionSummary() {
+                const amount = parseFloat(document.getElementById('depositAmount').value) || 0;
+                const selectedVault = document.querySelector('input[name="vault"]:checked').value;
+                
+                const vaultData = {
+                    conservative: { apy: '18.5%', name: 'Conservative' },
+                    balanced: { apy: '26.3%', name: 'Balanced' },
+                    aggressive: { apy: '34.7%', name: 'Aggressive' }
+                };
+                
+                const vault = vaultData[selectedVault];
+                const dailyYield = amount * (parseFloat(vault.apy) / 100) / 365;
+                
+                document.getElementById('summaryAmount').textContent = amount.toFixed(2) + ' USDe';
+                document.getElementById('summaryVault').textContent = vault.name;
+                document.getElementById('summaryAPY').textContent = vault.apy;
+                document.getElementById('summaryDaily').textContent = '$' + dailyYield.toFixed(2);
+                document.getElementById('summaryReceive').textContent = amount.toFixed(2) + ' Vault Tokens';
+            }
+
+            function updateWithdrawSummary() {
+                const amount = parseFloat(document.getElementById('withdrawAmount').value) || 0;
+                const usdValue = amount * 1.05; // Mock exchange rate
+                
+                document.getElementById('withdrawTokens').textContent = amount.toFixed(2);
+                document.getElementById('withdrawReceive').textContent = '~' + usdValue.toFixed(2) + ' USDe';
+            }
+
+            // Initialize with default values
+            updateTransactionSummary();
+        });
+    </script>
+</body>
+</html>

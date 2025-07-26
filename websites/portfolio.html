@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Dashboard - USDe Yield Tracker | Converge Network</title>
+    <meta name="description" content="Track your USDe holdings, yields earned, and investment history with real-time portfolio analytics and performance metrics.">
+    <meta name="keywords" content="USDe portfolio, yield tracking, DeFi dashboard, investment history, Converge Network">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <div class="logo-container">
+                    <i class="fas fa-coins logo-icon"></i>
+                    <h1 class="logo">USDe Portfolio</h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="crypto-example.html" class="nav-link">Home</a>
+                <a href="usde-optimizer.html" class="nav-link">Optimizer</a>
+                <a href="portfolio.html" class="nav-link active">Portfolio</a>
+                <a href="#about" class="nav-link">About</a>
+                <div class="wallet-section">
+                    <div class="wallet-balance" id="walletBalanceDisplay">
+                        <span class="balance-amount">1,247.83 USDe</span>
+                        <i class="fas fa-chevron-down balance-dropdown"></i>
+                    </div>
+                    <button class="btn btn-primary connect-wallet-btn" id="connectWalletNav">Connected ✅</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Portfolio Overview Hero -->
+        <section class="portfolio-hero">
+            <div class="container">
+                <div class="portfolio-header">
+                    <div class="portfolio-title-section">
+                        <h1 class="portfolio-title">Your Portfolio</h1>
+                        <p class="portfolio-subtitle">Track your USDe holdings, yields earned, and performance across all vaults</p>
+                    </div>
+                    <div class="portfolio-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export Data
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Position
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Portfolio Summary Cards -->
+                <div class="portfolio-summary-grid">
+                    <div class="portfolio-summary-card total-value">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <h3>Total Portfolio Value</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="value-display">
+                                <span class="primary-value" id="totalValue">$1,347.92</span>
+                                <span class="value-change positive" id="totalChange">+$247.92 (+22.5%)</span>
+                            </div>
+                            <div class="value-breakdown">
+                                <div class="breakdown-item">
+                                    <span>Principal:</span>
+                                    <span>$1,100.00</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Yields:</span>
+                                    <span class="positive">+$247.92</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-summary-card daily-yield">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>24h Yield Earned</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="value-display">
+                                <span class="primary-value">$3.47</span>
+                                <span class="value-change positive">+0.26%</span>
+                            </div>
+                            <div class="yield-projection">
+                                <span class="projection-label">Projected Monthly:</span>
+                                <span class="projection-value">$104.10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-summary-card apy-weighted">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <h3>Weighted APY</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="value-display">
+                                <span class="primary-value">24.8%</span>
+                                <span class="value-change positive">+1.2%</span>
+                            </div>
+                            <div class="apy-details">
+                                <div class="apy-range">
+                                    <span>Range: 18.5% - 34.7%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-summary-card active-positions">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <h3>Active Positions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="value-display">
+                                <span class="primary-value">3</span>
+                                <span class="positions-detail">Vaults</span>
+                            </div>
+                            <div class="positions-breakdown">
+                                <div class="position-item">
+                                    <span class="position-vault">Balanced:</span>
+                                    <span class="position-amount">847.12 USDe</span>
+                                </div>
+                                <div class="position-item">
+                                    <span class="position-vault">Conservative:</span>
+                                    <span class="position-amount">300.00 USDe</span>
+                                </div>
+                                <div class="position-item">
+                                    <span class="position-vault">Aggressive:</span>
+                                    <span class="position-amount">100.71 USDe</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Performance Chart -->
+        <section class="portfolio-chart-section">
+            <div class="container">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h2>Portfolio Performance</h2>
+                        <div class="chart-controls">
+                            <div class="time-range-selector">
+                                <button class="time-btn" data-range="7d">7D</button>
+                                <button class="time-btn active" data-range="30d">30D</button>
+                                <button class="time-btn" data-range="90d">90D</button>
+                                <button class="time-btn" data-range="1y">1Y</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="portfolioChart" width="800" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Positions -->
+        <section class="positions-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Active Positions</h2>
+                    <p class="section-subtitle">Detailed breakdown of your vault positions and performance</p>
+                </div>
+
+                <div class="positions-grid">
+                    <div class="position-card balanced-vault">
+                        <div class="position-header">
+                            <div class="vault-identity">
+                                <div class="vault-icon-container">
+                                    <i class="fas fa-balance-scale vault-icon-bg"></i>
+                                    <span class="vault-icon">⚖️</span>
+                                </div>
+                                <div class="vault-info">
+                                    <h3>Balanced Vault</h3>
+                                    <span class="vault-strategy">Multi-protocol strategy</span>
+                                </div>
+                            </div>
+                            <div class="position-status">
+                                <span class="status-indicator active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="position-metrics">
+                            <div class="metric-row">
+                                <div class="metric-item">
+                                    <span class="metric-label">Position Size</span>
+                                    <span class="metric-value">847.12 USDe</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Current APY</span>
+                                    <span class="metric-value positive">26.3%</span>
+                                </div>
+                            </div>
+                            <div class="metric-row">
+                                <div class="metric-item">
+                                    <span class="metric-label">Yields Earned</span>
+                                    <span class="metric-value positive">+$187.45</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Duration</span>
+                                    <span class="metric-value">24 days</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="position-actions">
+                            <button class="btn btn-secondary btn-small">
+                                <i class="fas fa-plus"></i>
+                                Add Funds
+                            </button>
+                            <button class="btn btn-secondary btn-small">
+                                <i class="fas fa-minus"></i>
+                                Withdraw
+                            </button>
+                            <button class="btn btn-details btn-small">
+                                <i class="fas fa-chart-bar"></i>
+                                Details
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="position-card conservative-vault">
+                        <div class="position-header">
+                            <div class="vault-identity">
+                                <div class="vault-icon-container">
+                                    <i class="fas fa-shield-alt vault-icon-bg"></i>
+                                    <span class="vault-icon">🛡️</span>
+                                </div>
+                                <div class="vault-info">
+                                    <h3>Conservative Vault</h3>
+                                    <span class="vault-strategy">Principal protection</span>
+                                </div>
+                            </div>
+                            <div class="position-status">
+                                <span class="status-indicator active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="position-metrics">
+                            <div class="metric-row">
+                                <div class="metric-item">
+                                    <span class="metric-label">Position Size</span>
+                                    <span class="metric-value">300.00 USDe</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Current APY</span>
+                                    <span class="metric-value positive">18.5%</span>
+                                </div>
+                            </div>
+                            <div class="metric-row">
+                                <div class="metric-item">
+                                    <span class="metric-label">Yields Earned</span>
+                                    <span class="metric-value positive">+$42.18</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Duration</span>
+                                    <span class="metric-value">18 days</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="position-actions">
+                            <button class="btn btn-secondary btn-small">
+                                <i class="fas fa-plus"></i>
+                                Add Funds
+                            </button>
+                            <button class="btn btn-secondary btn-small">
+                                <i class="fas fa-minus"></i>
+                                Withdraw
+                            </button>
+                            <button class="btn btn-details btn-small">
+                                <i class="fas fa-chart-bar"></i>
+                                Details
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="position-card aggressive-vault">
+                        <div class="position-header">
+                            <div class="vault-identity">
+                                <div class="vault-icon-container">
+                                    <i class="fas fa-rocket vault-icon-bg"></i>
+                                    <span class="vault-icon">🚀</span>
+                                </div>
+                                <div class="vault-info">
+                                    <h3>Aggressive Vault</h3>
+                                    <span class="vault-strategy">High yield strategy</span>
+                                </div>
+                            </div>
+                            <div class="position-status">
+                                <span class="status-indicator active">Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="position-metrics">
+                            <div class="metric-row">
+                                <div class="metric-item">
+                                    <span class="metric-label">Position Size</span>
+                                    <span class="metric-value">100.71 USDe</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Current APY</span>
+                                    <span class="metric-value positive">34.7%</span>
+                                </div>
+                            </div>
+                            <div class="metric-row">
+                                <div class="metric-item">
+                                    <span class="metric-label">Yields Earned</span>
+                                    <span class="metric-value positive">+$18.29</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">Duration</span>
+                                    <span class="metric-value">12 days</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="position-actions">
+                            <button class="btn btn-secondary btn-small">
+                                <i class="fas fa-plus"></i>
+                                Add Funds
+                            </button>
+                            <button class="btn btn-secondary btn-small">
+                                <i class="fas fa-minus"></i>
+                                Withdraw
+                            </button>
+                            <button class="btn btn-details btn-small">
+                                <i class="fas fa-chart-bar"></i>
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transaction History -->
+        <section class="transaction-history-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Transaction History</h2>
+                    <div class="history-controls">
+                        <div class="filter-dropdown">
+                            <select id="transactionFilter" class="filter-select">
+                                <option value="all">All Transactions</option>
+                                <option value="deposits">Deposits</option>
+                                <option value="withdrawals">Withdrawals</option>
+                                <option value="yields">Yield Payments</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary btn-small">
+                            <i class="fas fa-download"></i>
+                            Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="transaction-table-container">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Vault</th>
+                                <th>Amount</th>
+                                <th>APY</th>
+                                <th>Status</th>
+                                <th>Tx Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <tr class="transaction-row">
+                                <td>
+                                    <div class="date-info">
+                                        <span class="date-primary">Jul 25, 2025</span>
+                                        <span class="date-time">14:32 UTC</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="transaction-type yield">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Yield Payment</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="vault-name">Balanced</span>
+                                </td>
+                                <td>
+                                    <span class="amount positive">+$3.47 USDe</span>
+                                </td>
+                                <td>
+                                    <span class="apy-value">26.3%</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge completed">Completed</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="tx-link">0xa1b2...c3d4</a>
+                                </td>
+                            </tr>
+                            <tr class="transaction-row">
+                                <td>
+                                    <div class="date-info">
+                                        <span class="date-primary">Jul 24, 2025</span>
+                                        <span class="date-time">09:15 UTC</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="transaction-type deposit">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>Deposit</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="vault-name">Aggressive</span>
+                                </td>
+                                <td>
+                                    <span class="amount">100.00 USDe</span>
+                                </td>
+                                <td>
+                                    <span class="apy-value">34.7%</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge completed">Completed</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="tx-link">0xe5f6...g7h8</a>
+                                </td>
+                            </tr>
+                            <tr class="transaction-row">
+                                <td>
+                                    <div class="date-info">
+                                        <span class="date-primary">Jul 22, 2025</span>
+                                        <span class="date-time">16:45 UTC</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="transaction-type yield">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Yield Payment</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="vault-name">Conservative</span>
+                                </td>
+                                <td>
+                                    <span class="amount positive">+$2.12 USDe</span>
+                                </td>
+                                <td>
+                                    <span class="apy-value">18.5%</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge completed">Completed</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="tx-link">0xi9j0...k1l2</a>
+                                </td>
+                            </tr>
+                            <tr class="transaction-row">
+                                <td>
+                                    <div class="date-info">
+                                        <span class="date-primary">Jul 18, 2025</span>
+                                        <span class="date-time">11:20 UTC</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="transaction-type deposit">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>Deposit</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="vault-name">Balanced</span>
+                                </td>
+                                <td>
+                                    <span class="amount">500.00 USDe</span>
+                                </td>
+                                <td>
+                                    <span class="apy-value">25.8%</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge completed">Completed</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="tx-link">0xm3n4...o5p6</a>
+                                </td>
+                            </tr>
+                            <tr class="transaction-row">
+                                <td>
+                                    <div class="date-info">
+                                        <span class="date-primary">Jul 15, 2025</span>
+                                        <span class="date-time">08:30 UTC</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="transaction-type deposit">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>Deposit</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="vault-name">Conservative</span>
+                                </td>
+                                <td>
+                                    <span class="amount">300.00 USDe</span>
+                                </td>
+                                <td>
+                                    <span class="apy-value">18.2%</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge completed">Completed</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="tx-link">0xq7r8...s9t0</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>USDe Portfolio</h4>
+                    <p>Advanced portfolio tracking for USDe yield optimization. Track yields, monitor performance, and maximize returns across the Ethena ecosystem.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="#" aria-label="Telegram">📱 Telegram</a></li>
+                        <li><a href="#" aria-label="Twitter">🐦 Twitter</a></li>
+                        <li><a href="#" aria-label="Discord">💬 Discord</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#" aria-label="Documentation">📚 Documentation</a></li>
+                        <li><a href="#" aria-label="Security Audits">🔒 Security Audits</a></li>
+                        <li><a href="#" aria-label="API">⚡ API Access</a></li>
+                        <li><a href="#" aria-label="Support">🎧 Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 USDe Portfolio Tracker | Powered by Converge Network | Built for the Ethena Ecosystem</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Portfolio Performance Chart
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            const portfolioChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jul 1', 'Jul 5', 'Jul 10', 'Jul 15', 'Jul 20', 'Jul 25'],
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: [1100, 1152, 1198, 1245, 1289, 1348],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Principal',
+                        data: [1100, 1100, 1100, 1100, 1100, 1100],
+                        borderColor: '#6b7280',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#ffffff',
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#475569',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#94a3b8'
+                            },
+                            grid: {
+                                color: 'rgba(71, 85, 105, 0.3)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(71, 85, 105, 0.3)'
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+
+            // Time range selector functionality
+            const timeButtons = document.querySelectorAll('.time-btn');
+            timeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    timeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update chart data based on selected range
+                    const range = this.dataset.range;
+                    updateChartData(range);
+                });
+            });
+
+            function updateChartData(range) {
+                // Mock data for different time ranges
+                const dataMap = {
+                    '7d': {
+                        labels: ['Jul 19', 'Jul 20', 'Jul 21', 'Jul 22', 'Jul 23', 'Jul 24', 'Jul 25'],
+                        portfolio: [1320, 1325, 1331, 1338, 1342, 1345, 1348],
+                        principal: [1100, 1100, 1100, 1100, 1100, 1100, 1100]
+                    },
+                    '30d': {
+                        labels: ['Jul 1', 'Jul 5', 'Jul 10', 'Jul 15', 'Jul 20', 'Jul 25'],
+                        portfolio: [1100, 1152, 1198, 1245, 1289, 1348],
+                        principal: [1100, 1100, 1100, 1100, 1100, 1100]
+                    },
+                    '90d': {
+                        labels: ['May 1', 'May 15', 'Jun 1', 'Jun 15', 'Jul 1', 'Jul 15', 'Jul 25'],
+                        portfolio: [1000, 1089, 1165, 1234, 1298, 1321, 1348],
+                        principal: [1000, 1000, 1000, 1100, 1100, 1100, 1100]
+                    },
+                    '1y': {
+                        labels: ['Aug 2024', 'Oct 2024', 'Dec 2024', 'Feb 2025', 'Apr 2025', 'Jun 2025', 'Jul 2025'],
+                        portfolio: [500, 687, 823, 945, 1089, 1234, 1348],
+                        principal: [500, 650, 800, 950, 1000, 1050, 1100]
+                    }
+                };
+
+                const data = dataMap[range];
+                portfolioChart.data.labels = data.labels;
+                portfolioChart.data.datasets[0].data = data.portfolio;
+                portfolioChart.data.datasets[1].data = data.principal;
+                portfolioChart.update();
+            }
+
+            // Transaction filter functionality
+            const transactionFilter = document.getElementById('transactionFilter');
+            if (transactionFilter) {
+                transactionFilter.addEventListener('change', function() {
+                    const filterValue = this.value;
+                    const rows = document.querySelectorAll('.transaction-row');
+                    
+                    rows.forEach(row => {
+                        const transactionType = row.querySelector('.transaction-type span').textContent.toLowerCase();
+                        
+                        if (filterValue === 'all') {
+                            row.style.display = '';
+                        } else if (filterValue === 'deposits' && transactionType.includes('deposit')) {
+                            row.style.display = '';
+                        } else if (filterValue === 'withdrawals' && transactionType.includes('withdrawal')) {
+                            row.style.display = '';
+                        } else if (filterValue === 'yields' && transactionType.includes('yield')) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Position actions
+            document.querySelectorAll('.position-actions .btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.textContent.trim().toLowerCase();
+                    const positionCard = this.closest('.position-card');
+                    const vaultName = positionCard.querySelector('.vault-info h3').textContent;
+                    
+                    console.log(`${action} action clicked for ${vaultName}`);
+                    // Implement actual functionality here
+                });
+            });
+
+            // Real-time updates simulation
+            function updatePortfolioValues() {
+                const totalValueElement = document.getElementById('totalValue');
+                const totalChangeElement = document.getElementById('totalChange');
+                
+                if (totalValueElement && totalChangeElement) {
+                    // Simulate small fluctuations
+                    const baseValue = 1347.92;
+                    const fluctuation = (Math.random() - 0.5) * 10; // +/- $5
+                    const newValue = baseValue + fluctuation;
+                    
+                    const change = newValue - 1100; // Original principal
+                    const changePercent = ((change / 1100) * 100).toFixed(1);
+                    
+                    totalValueElement.textContent = `$${newValue.toFixed(2)}`;
+                    totalChangeElement.textContent = `+$${change.toFixed(2)} (+${changePercent}%)`;
+                }
+            }
+
+            // Update values every 30 seconds
+            setInterval(updatePortfolioValues, 30000);
+        });
+    </script>
+</body>
+</html>
