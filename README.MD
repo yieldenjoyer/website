@@ -1,105 +1,75 @@
-# Pendle PT/YT Contracts 
+USDe/sUSDe Yield Optimizer Website
+A comprehensive DeFi platform for optimizing USDe/sUSDe yields on the Converge network. The core feature is an automated yield optimization engine that aggregates opportunities from protocols like Strata, Terminal, and Ethereal, using machine learning for risk-adjusted rebalancing and customizable vaults to deliver enhanced returns.
 
-Collection of smart contracts for Pendle Protocol Principal Token (PT) and Yield Token (YT) looping strategies.
+Overview
+This website serves as the user interface for the USDe/sUSDe Yield Optimization Engine, an automated vault platform that maximizes risk-adjusted yields on Converge by aggregating opportunities from Strata, Terminal, and Ethereal. It uses ML for portfolio optimization (Sharpe ratio rebalancing), smart contract execution for gas-efficient trades, and customizable vaults to deliver 20-30%+ APY with built-in safeguards, driving TVL growth for Ethena's ecosystem.
 
-## Structure
+The engine complements Ethena's delta-neutral yield mechanism by intelligently routing USDe/sUSDe across Converge protocols, providing users with seamless, high-yield strategies in a secure and user-friendly interface.
 
-```
-├── contracts/          # Main contract implementations
-├── interfaces/         # Protocol interfaces 
-├── utils/             # Utility contracts
-├── security/          # Security contracts
-└── CONTENTS.md        # Contents guide
-```
+Features
+Automated Yield Optimization: Real-time monitoring of 50+ USDe/sUSDe opportunities, with APY calculations accounting for rewards, fees, gas, and risks.
+ML-Powered Rebalancing: Portfolio optimization using Modern Portfolio Theory and Sharpe ratio, with automated triggers for threshold changes (e.g., 2% APY shift).
+Customizable Vaults: Pre-built types (Conservative, Balanced, Aggressive) and custom options for different risk profiles.
+Smart Contract Execution: Batched deposits/withdraws, slippage/MEV protection, and emergency pauses for market stress.
+Frontend Dashboard: Interactive UI with real-time APY, allocation charts (using Recharts), and deposit/withdraw forms.
+Backend Integration: Flask server for ML (scipy/numpy) and data aggregation from DefiLlama or protocol APIs.
+Converge Testnet Support: Deployed on Converge for low-latency trades, with ethers.js for wallet connections.
+Tech Stack
+Frontend: React, Tailwind CSS, Recharts (charts), ethers.js (wallet/contract interactions).
+Backend: Python (Flask, numpy, scipy for ML), requests (API fetching).
+Deployment: Docker for backend, Vercel/Netlify for frontend.
+Blockchain: Solidity contracts on Converge testnet (USDe as gas token).
+Data Sources: DefiLlama API for real APY, filtered for USDe/sUSDe pools.
+Setup Instructions
+Clone the Repo:
+text
 
-## Overview
+Collapse
 
-This repo has 43 Solidity contracts for:
+Wrap
 
-- Pendle Protocol PT/YT looping 
-- Multi-protocol DeFi integrations (Aave, Morpho, Ethena, Chainlink)
-- Gas optimized implementations
-- Security features and reentrancy protection
+Copy
+git clone https://github.com/yieldenjoyer/website
+cd website
+Backend Setup (ML and API):
+text
 
-## Main Contracts
+Collapse
 
-### Looping Strategies
-- `SimplePTYTLooper.sol` - Basic PT/YT looping (57KB)
-- `EnhancedPTYTLooper.sol` - Advanced looping (26KB) 
-- `MultiAssetYieldLooper.sol` - Multi-asset yield optimization (23KB)
-- `UltraFastYieldLooper.sol` - Fast looper (18KB)
+Wrap
 
-### Ethena Integration
-- `SimpleEUSDELooper.sol` - eUSDe looping (11KB)
-- `DeployableEUSDELooper.sol` - Lightweight version (4KB)
+Copy
+cd defi-yield-aggregator
+pip install flask numpy scipy requests
+python server.py
+Access API at http://localhost:5000/api/optimize?type=Balanced.
+Frontend Setup (UI):
+text
 
-### Other
-- `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation (35KB)
-- `YieldTokenLooper.sol` & `YieldTokenLooperV2.sol` - YT loopers
+Collapse
 
-## Features
+Wrap
 
-- Gas optimized storage and function calls
-- Reentrancy protection via `ReentrancyGuard.sol`
-- Input validation and bounds checking
-- Safe arithmetic and access controls
+Copy
+cd websites
+npm install
+npm start
+Access at http://localhost:3000.
+Smart Contracts (Optional for Testnet)
+cd contracts
+npx hardhat deploy --network converge_testnet (configure hardhat.config.js with RPC/private key from Ethena form).
+Update YieldEngine.js with deployed contract address.
+Docker for Backend:
+text
 
-## Protocol Integrations
+Collapse
 
-- **Pendle**: Router V4, Market, PT/YT tokens
-- **Aave V3**: Pool and aToken interactions  
-- **Morpho**: Lending protocol callbacks
-- **Ethena**: sUSDe and staking rewards
-- **Chainlink**: Price feeds and oracles
+Wrap
 
-## Usage
-
-```solidity
-// Basic PT/YT looping
-SimplePTYTLooper looper = new SimplePTYTLooper();
-looper.initialize(pendleRouter, market, principalToken);
-looper.executeLoop(amount, loops);
-```
-
-## Directories
-
-- `/contracts` (12 files) - Main implementations
-- `/interfaces` (26 files) - Protocol interfaces for Pendle, Aave, Morpho, etc.
-- `/utils` (4 files) - `SafeERC20.sol`, `Address.sol`, `TokenUtils.sol`, `ProtocolConstants.sol`
-- `/security` (1 file) - `ReentrancyGuard.sol`
-- `/usde-optimization-engine` - USDe yield optimization tools and web interface
-
-## Additional Tools
-
-### USDe Optimization Engine
-For advanced USDe yield optimization strategies, check out the dedicated tooling in `/usde-optimization-engine`. This includes a web dashboard, backend services, and specialized contracts for maximizing USDe yields across protocols.
-
-## Development
-
-Requirements: Solidity ^0.8.0, Hardhat/Foundry
-
-```bash
-# Compile
-npx hardhat compile
-# or
-forge build
-
-# Test
-npx hardhat test
-```
-
-## Stats
-
-43 Solidity contracts, ~280KB total, 13k+ lines of code
-
-## Security Warning
-
-These contracts handle real money. Test thoroughly, get audits, use multisigs.
-
-## Docs
-
-See [CONTENTS.md](./CONTENTS.md) for detailed info.
-
-## Contributing
-
-Include tests, follow patterns, document changes.
+Copy
+docker-compose up
+Test on Converge:
+Connect MetaMask to Converge testnet (RPC from https://form.typeform.com/to/Z8EwR2Fh).
+Use explorer: https://explorer-converge-testnet-1.t.conduit.xyz/.
+How It Works
+The engine aggregates real-time yields from Converge protocols, optimizes allocations using ML (Sharpe ratio for risk-return balance), and executes trades via smart contracts with gas efficiency and safeguards (e.g., pause during volatility). Users select vaults, deposit USDe, and the system auto-rebalances for 20-30%+ APY.
