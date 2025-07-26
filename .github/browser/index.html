@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/polybets-logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PolyBets - Advanced DeFi Yield Optimization Platform</title>
+    <meta name="description" content="Next-generation DeFi yield optimization with real-time analytics, 3D visualizations, and automated portfolio management" />
+    
+    <!-- Preload Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Matrix-style meta theme -->
+    <meta name="theme-color" content="#00FF41" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="PolyBets - Advanced DeFi Yield Optimization" />
+    <meta property="og:description" content="Experience the future of DeFi with our Matrix-inspired yield optimization platform" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Twitter meta tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PolyBets - Advanced DeFi Yield Optimization" />
+    <meta name="twitter:description" content="Experience the future of DeFi with our Matrix-inspired yield optimization platform" />
+    
+    <style>
+      /* Prevent FOUC and setup initial Matrix theme */
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0a0a0a;
+        color: #00FF41;
+        font-family: 'Rajdhani', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      #root {
+        min-height: 100vh;
+      }
+      
+      /* Matrix loading animation */
+      .matrix-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #0a0a0a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .matrix-loader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .matrix-text {
+        font-family: 'Orbitron', monospace;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #00FF41;
+        text-shadow: 0 0 10px #00FF41;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+      
+      /* Matrix background grid */
+      .matrix-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+        background-size: 20px 20px;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Matrix background grid -->
+    <div class="matrix-bg"></div>
+    
+    <!-- Loading screen -->
+    <div id="matrix-loader" class="matrix-loader">
+      <div class="matrix-text">INITIALIZING MATRIX...</div>
+    </div>
+    
+    <!-- React root -->
+    <div id="root"></div>
+    
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Hide loader after page load
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loader = document.getElementById('matrix-loader');
+          if (loader) {
+            loader.classList.add('hidden');
+            setTimeout(() => loader.remove(), 500);
+          }
+        }, 1500);
+      });
+    </script>
+  </body>
+</html>

@@ -67,6 +67,12 @@ looper.executeLoop(amount, loops);
 - `/interfaces` (26 files) - Protocol interfaces for Pendle, Aave, Morpho, etc.
 - `/utils` (4 files) - `SafeERC20.sol`, `Address.sol`, `TokenUtils.sol`, `ProtocolConstants.sol`
 - `/security` (1 file) - `ReentrancyGuard.sol`
+- `/usde-optimization-engine` - USDe yield optimization tools and web interface
+
+## Additional Tools
+
+### USDe Optimization Engine
+For advanced USDe yield optimization strategies, check out the dedicated tooling in `/usde-optimization-engine`. This includes a web dashboard, backend services, and specialized contracts for maximizing USDe yields across protocols.
 
 ## Development
 
