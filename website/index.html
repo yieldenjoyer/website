@@ -1,14 +1,169 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matrix Finance</title>
-    <meta name="description" content="Matrix Finance - Advanced DeFi yield optimization platform with cutting-edge strategies and real-time analytics" />
+    <title>PolyBets - Advanced DeFi Yield Platform</title>
+    <meta name="description" content="Next-generation DeFi yield optimization platform with advanced 3D visualizations and real-time analytics." />
+    <meta name="keywords" content="DeFi, yield farming, crypto, blockchain, 3D visualization, analytics" />
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Matrix-themed styling -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0a0a0a;
+        color: #00ff41;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loading-animation {
+        text-align: center;
+      }
+      
+      .loading-text {
+        font-family: 'Orbitron', monospace;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #00ff41;
+        margin-bottom: 2rem;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+      
+      .loading-dots {
+        display: inline-block;
+        animation: dots 1.5s infinite;
+      }
+      
+      @keyframes glow {
+        from { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41; }
+        to { text-shadow: 0 0 20px #00ff41, 0 0 30px #00ff41; }
+      }
+      
+      @keyframes dots {
+        0%, 20% { content: ''; }
+        40% { content: '.'; }
+        60% { content: '..'; }
+        80%, 100% { content: '...'; }
+      }
+      
+      .matrix-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.1;
+      }
+    </style>
   </head>
   <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-animation">
+        <div class="loading-text">
+          POLYBETS<span class="loading-dots"></span>
+        </div>
+        <div style="width: 200px; height: 2px; background: linear-gradient(90deg, transparent, #00ff41, transparent); animation: loading-bar 2s ease-in-out infinite;"></div>
+      </div>
+    </div>
+    
+    <!-- Matrix Background -->
+    <canvas id="matrix-bg" class="matrix-bg"></canvas>
+    
+    <!-- Main App -->
     <div id="root"></div>
+    
+    <!-- Loading Bar Animation -->
+    <style>
+      @keyframes loading-bar {
+        0% { transform: translateX(-100%); }
+        50% { transform: translateX(0%); }
+        100% { transform: translateX(100%); }
+      }
+    </style>
+    
+    <!-- Matrix Rain Effect -->
+    <script>
+      // Simple matrix rain effect for loading
+      const canvas = document.getElementById('matrix-bg');
+      const ctx = canvas.getContext('2d');
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+      const matrixArray = matrix.split("");
+      
+      const fontSize = 10;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+      
+      for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+      }
+      
+      function drawMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#00ff41';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+          const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+      
+      const matrixInterval = setInterval(drawMatrix, 35);
+      
+      // Clean up when app loads
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          clearInterval(matrixInterval);
+          document.getElementById('loading-screen').style.opacity = '0';
+          setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+          }, 500);
+        }, 2000);
+      });
+      
+      // Resize canvas
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    </script>
+    
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

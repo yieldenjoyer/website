@@ -20,12 +20,8 @@ This repo has 43 Solidity contracts for:
 - Multi-protocol DeFi integrations (Aave, Morpho, Ethena, Chainlink)
 - Gas optimized implementations
 - Security features and reentrancy protection
-- Created to take a flashloan, mint PY (PT+YT) coins on pendle, send the PT to aave, euler or morpho, take a loan, loop it multiple times up to max LTV/Etc in one TX.
 
-# Purpose
-- flash loan from morpho -> pendle mint PT+YT(py token),-> aave/euler/morpho (plans to add silo), -> take max LTV on the PT, back to pendle to mint PT+YT, repeat.
-
-# Warning - these involve highly complex smart contract interactions. Make sure to use on testnet first to verify before trying with real money. Despite having multiple audits via zan.top, there is still the possibility of a vulnerability.
+## Main Contracts
 
 ### Looping Strategies
 - `SimplePTYTLooper.sol` - Basic PT/YT looping (57KB)
@@ -34,13 +30,11 @@ This repo has 43 Solidity contracts for:
 - `UltraFastYieldLooper.sol` - Fast looper (18KB)
 
 ### Ethena Integration
-- `SimpleEUSDELooper.sol` - eUSDe looping 
-- `DeployableEUSDELooper.sol` - Lightweight version 
-- `SimpleEUSDELooperv2.sol` - incomplete, use first(non v2) if compiling to create a contract).
-
+- `SimpleEUSDELooper.sol` - eUSDe looping (11KB)
+- `DeployableEUSDELooper.sol` - Lightweight version (4KB)
 
 ### Other
-- `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation 
+- `MULTI-LOOP-PTYT-STRATEGY.sol` - Multi-loop implementation (35KB)
 - `YieldTokenLooper.sol` & `YieldTokenLooperV2.sol` - YT loopers
 
 ## Features
@@ -52,16 +46,11 @@ This repo has 43 Solidity contracts for:
 
 ## Protocol Integrations
 
-- **Pendle**: Router V4, Market, PT/YT/SY tokens
+- **Pendle**: Router V4, Market, PT/YT tokens
 - **Aave V3**: Pool and aToken interactions  
-- **Morpho**: Lending protocol callbacks and flashloans
-- **Ethena**: USDe, Eusde, Susde
+- **Morpho**: Lending protocol callbacks
+- **Ethena**: sUSDe and staking rewards
 - **Chainlink**: Price feeds and oracles
-- **Euler**: Lending PT & Looping
-
-## Current config is for Ethena's USDe and Ethereal's Eusde mainly with plans to add more coins in the future that will be loopable.
-
-
 
 ## Usage
 
@@ -101,34 +90,10 @@ npx hardhat test
 
 These contracts handle real money. Test thoroughly, get audits, use multisigs.
 
-## These contract were developed to be used mainly with Ethena's USDe and Ethereal.trade's Eusde but are open to exploring all other options this could be useful for!
-
-
 ## Docs
 
 See [CONTENTS.md](./CONTENTS.md) for detailed info.
 
-
-## Development Notes
-Some parts of this project were developed with AI assistance for rapid prototyping and security enhancements. All contracts require thorough testing and security review before mainnet deployment.
-
-
-
 ## Contributing
 
-Contributions welcome! Areas needing help:
-- [ ] Security audits and testing
-- [ ] Gas optimization 
-- [ ] Additional protocol integrations
-- [ ] Documentation improvements
-
-### How to Contribute
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/your-feature`)
-3. Test thoroughly on testnets
-4. Submit pull request with detailed description
-
-Feel free to open issues for bugs, feature requests, or questions!
-
-## License
-MIT - see LICENSE file for details
+Include tests, follow patterns, document changes.
